@@ -1,0 +1,17 @@
+# Secretos: nunca al repo
+.env
+.env.*
+!.env.example
+
+# Entornos y dependencias
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# Datos crudos y reportes (privados, se regeneran)
+data/
+reportes/
+
+# macOS
+.DS_Store
