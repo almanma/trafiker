@@ -1,3 +1,5 @@
+Antes de cualquier trabajo en este repo, carga y sigue la skill `trafiker-flujo-git`.
+
 # Trafiker — reglas del proyecto
 
 Radar diario de noticias y tendencias políticas en Colombia. La usuaria está aprendiendo: explicar en español y en pocas palabras cada decisión y cada concepto (agente, skill, memoria, MCP) cuando aparezca.
