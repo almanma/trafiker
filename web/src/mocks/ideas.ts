@@ -1,0 +1,101 @@
+import { urlEjemplo } from "./medios";
+import type { Idea } from "./tipos";
+
+/* Ideas de contenido de ejemplo. Formatos intercalados a propósito. */
+
+export const ideas: Idea[] = [
+  {
+    id: "i-metro-cuentas",
+    columna: "sugerida",
+    titulo: "Las cuentas del metro, en 20 segundos",
+    gancho: "Cuatro sillas vacías frenaron la obra más grande de Bogotá.",
+    angulo: "Responsabilidad: quién no llegó y qué cuesta esperar.",
+    tono: "Firme, sin ataque personal",
+    formato: "video",
+    duracion: "20 s",
+    dato: { texto: "Faltaron cuatro concejales para el quórum.", fuente: "El Tiempo", url: urlEjemplo("el-tiempo", "quorum-metro") },
+    confianza: 72,
+    noticiaId: "cupo-endeudamiento-bogota",
+    guion: [
+      "0–3 s: plano de sillas vacías. Texto: «Cuatro sillas».",
+      "3–10 s: qué se votaba y por qué importa.",
+      "10–17 s: qué pasa si se retrasa la licitación.",
+      "17–20 s: «El jueves se vuelve a votar. Vamos a estar mirando».",
+    ],
+  },
+  {
+    id: "i-recorte-mapa",
+    columna: "sugerida",
+    titulo: "Qué se aplaza y qué no del recorte",
+    gancho: "No todo se recorta: esto es lo que sí se mantiene.",
+    angulo: "Explicativo: separar el dato del miedo.",
+    tono: "Didáctico",
+    formato: "carrusel",
+    dato: { texto: "El aplazamiento se hace por decreto.", fuente: "El Tiempo", url: urlEjemplo("el-tiempo", "aplazamiento-decreto") },
+    confianza: 66,
+    noticiaId: "recorte-presupuestal",
+    guion: ["Portada: «¿Qué recortó Hacienda?»", "Lámina 2: lo que se aplaza", "Lámina 3: lo que sigue", "Lámina 4: qué falta saber"],
+  },
+  {
+    id: "i-caribe-hilo",
+    columna: "sugerida",
+    titulo: "Hilo: la tarifa de energía en el Caribe",
+    gancho: "Tu factura subió. Esto es lo que se sabe (y lo que no).",
+    angulo: "Servicio al ciudadano; evitar la cifra sin fuente.",
+    tono: "Cercano",
+    formato: "hilo",
+    dato: { texto: "Las veedurías radicaron una solicitud de revisión.", fuente: "El Heraldo", url: urlEjemplo("el-heraldo", "tarifa-energia") },
+    confianza: 61,
+    noticiaId: "tarifas-energia-caribe",
+    guion: ["1/ La protesta de anoche", "2/ Qué pidieron a la Superintendencia", "3/ El dato que circula y no tiene sustento", "4/ Cómo reclamar"],
+  },
+  {
+    id: "i-cauca",
+    columna: "produccion",
+    titulo: "Cauca: seguridad con presencia civil",
+    gancho: "Más tropas no basta: esto piden las comunidades.",
+    angulo: "Seguridad integral.",
+    tono: "Sobrio",
+    formato: "video",
+    duracion: "30 s",
+    dato: { texto: "El consejo de seguridad se convocó a las 11:00.", fuente: "El Tiempo", url: urlEjemplo("el-tiempo", "consejo-seguridad-cauca") },
+    confianza: 58,
+    noticiaId: "seguridad-cauca",
+    guion: ["0–3 s: mapa del norte del Cauca", "3–20 s: qué pasó y qué se pidió", "20–30 s: propuesta"],
+  },
+  {
+    id: "i-censo",
+    columna: "publicada",
+    titulo: "Cómo opinar en la consulta del censo",
+    gancho: "Tienes 30 días para decir algo sobre tu censo electoral.",
+    angulo: "Pedagogía electoral.",
+    tono: "Neutral",
+    formato: "carrusel",
+    dato: { texto: "La consulta dura 30 días.", fuente: "Registraduría", url: urlEjemplo("registraduria", "resolucion-censo") },
+    confianza: 84,
+    noticiaId: "censo-electoral",
+    guion: ["Portada", "Paso 1", "Paso 2", "Fecha límite"],
+  },
+  {
+    id: "i-desempleo",
+    columna: "descartada",
+    titulo: "El desempleo «más alto de la década»",
+    gancho: "Descartada: el dato no resiste el contraste con el DANE.",
+    angulo: "—",
+    tono: "—",
+    formato: "hilo",
+    dato: { texto: "Afirmación marcada como falsa.", fuente: "DANE", url: urlEjemplo("dane", "mercado-laboral-bogota") },
+    confianza: 20,
+    noticiaId: "cupo-endeudamiento-bogota",
+    guion: [],
+  },
+];
+
+export const columnasIdea = [
+  { id: "sugerida", nombre: "Sugerida" },
+  { id: "produccion", nombre: "En producción" },
+  { id: "publicada", nombre: "Publicada" },
+  { id: "descartada", nombre: "Descartada" },
+] as const;
+
+export const nombreFormato = { video: "Video", carrusel: "Carrusel", hilo: "Hilo" } as const;

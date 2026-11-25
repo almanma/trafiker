@@ -1,0 +1,39 @@
+/* Capturas de cada ruta (1440 y 390, oscuro; Hoy y Matriz también en claro).
+   Guarda en capturas/ y copia miniaturas a public/showcase/ para /showcase. */
+import { chromium } from "playwright";
+import { mkdirSync } from "node:fs";
+import { BASE, rutas, vistas } from "./rutas";
+
+const solo = process.argv[2];
+
+async function main() {
+  mkdirSync("capturas", { recursive: true });
+  mkdirSync("public/showcase", { recursive: true });
+  const browser = await chromium.launch();
+  for (const v of vistas) {
+    const ctx = await browser.newContext({ viewport: { width: v.width, height: v.height }, deviceScaleFactor: 1, reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    for (const r of rutas) {
+      if (solo && r.nombre !== solo) continue;
+      const temas = ["dark", ...(r.nombre === "hoy" || r.nombre === "matriz" ? ["light"] : [])];
+      for (const t of temas) {
+        await page.goto(`${BASE}${r.ruta}?tema=${t}`, { waitUntil: "networkidle" });
+        await page.evaluate(() => document.fonts.ready);
+        await page.waitForTimeout(400);
+        const archivo = `capturas/${r.nombre}-${v.nombre}-${t === "dark" ? "oscuro" : "claro"}.png`;
+        await page.screenshot({ path: archivo, fullPage: true });
+        if (t === "dark") {
+          await page.screenshot({ path: `public/showcase/${r.nombre}-${v.nombre}.png`, fullPage: false });
+        }
+        console.log("✓", archivo);
+      }
+    }
+    await ctx.close();
+  }
+  await browser.close();
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
