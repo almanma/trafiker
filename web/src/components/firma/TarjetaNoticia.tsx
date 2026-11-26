@@ -28,6 +28,8 @@ export function TarjetaNoticia({
   seleccionada,
   maxFuentes = 3,
   conResumen = true,
+  destacada = false,
+  rango,
   className,
 }: {
   noticia: Noticia;
@@ -35,6 +37,10 @@ export function TarjetaNoticia({
   seleccionada?: boolean;
   maxFuentes?: number;
   conResumen?: boolean;
+  /** La primera del brief: titular grande, resumen más largo y leyenda de cobertura. */
+  destacada?: boolean;
+  /** Posición por relevancia (1 = la más cubierta). */
+  rango?: number;
   className?: string;
 }) {
   const medios = Array.from(new Set(noticia.articulos.map((a) => a.medioId)));
@@ -43,18 +49,23 @@ export function TarjetaNoticia({
     <article
       aria-labelledby={`tn-${noticia.id}`}
       className={cn(
-        "group relative flex flex-col gap-3 rounded-panel border bg-surface p-4 shadow-e1 transition-[box-shadow,border-color] duration-200 ease-[var(--ease-base)] md:p-5",
+        "group relative flex flex-col gap-3 rounded-panel border bg-surface p-4 focus-within:border-border-strong shadow-e1 transition-[box-shadow,border-color] duration-200 ease-[var(--ease-base)] md:p-5",
         "hover:border-border-strong hover:shadow-e2",
         seleccionada ? "border-signal" : "border-border",
         className,
       )}
     >
       <div className="flex flex-wrap items-center gap-2">
+        {rango !== undefined && (
+          <span className="text-dato font-semibold text-muted tabular" aria-label={`Relevancia ${rango}`}>
+            #{rango}
+          </span>
+        )}
         <Insignia>{noticia.tema}</Insignia>
         <span className="text-dato text-muted">{noticia.territorio}</span>
         <DeltaTendencia tendencia={noticia.tendencia} delta={noticia.delta} className="ml-auto" />
       </div>
-      <h3 id={`tn-${noticia.id}`} className="text-tarjeta">
+      <h3 id={`tn-${noticia.id}`} className={destacada ? "text-secundario" : "text-tarjeta"}>
         <button
           type="button"
           data-noticia={noticia.id}
@@ -64,8 +75,8 @@ export function TarjetaNoticia({
           {noticia.titular}
         </button>
       </h3>
-      {conResumen && <p className="line-clamp-2 text-chico text-muted">{noticia.resumen}</p>}
-      <BarraDeSesgo conteo={contarPorLinea(noticia.articulos)} compacta />
+      {conResumen && <p className={destacada ? "line-clamp-3 max-w-lectura text-cuerpo text-muted" : "line-clamp-2 text-chico text-muted"}>{noticia.resumen}</p>}
+      <BarraDeSesgo conteo={contarPorLinea(noticia.articulos)} compacta={!destacada} className={destacada ? "relative mt-1 max-w-md" : undefined} />
       <div className="relative flex flex-wrap items-center gap-1.5">
         {medios.slice(0, maxFuentes).map((m) => (
           <ChipFuente key={m} medioId={m} />
