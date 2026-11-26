@@ -43,6 +43,7 @@
   /* Elevación: 3 niveles en capas, sombra fría y difusa (nunca gris duro). */
   --t-e1: 0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.04);
   --t-e2: 0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --t-brillo: rgba(255, 255, 255, 0.75);
   --t-e3: 0 2px 6px 0 rgba(15, 23, 42, 0.05), 0 16px 32px -8px rgba(15, 23, 42, 0.14), 0 32px 64px -16px rgba(15, 23, 42, 0.1);
 }
 
@@ -79,6 +80,7 @@
   --t-sin-verificar: #9aa4b2;
   --t-sin-verificar-suave: rgba(154, 164, 178, 0.12);
   --t-sin-verificar-borde: rgba(154, 164, 178, 0.3);
+  --t-brillo: rgba(255, 255, 255, 0.05);
   --t-e1: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   --t-e2: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
   --t-e3: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 24px 48px -12px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -176,6 +178,14 @@
   --container-*: initial;
   --container-lectura: 52ch; /* ≈ 75 caracteres reales por línea (Inter es más angosta que el "0") */
   --container-contenido: 1416px;
+  /* Anchos de bloque (formularios, estados, textos cortos). */
+  --container-xs: 20rem;
+  --container-sm: 24rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-3xl: 48rem;
 
   --ease-base: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-panel: cubic-bezier(0.4, 0, 0.2, 1);
@@ -184,7 +194,7 @@
   --animate-pulso: pulso 2.4s var(--ease-panel) infinite;
   --animate-barrido: barrido 9s linear infinite;
   --animate-respira: respira 1.6s var(--ease-panel) infinite alternate;
-  --animate-brillo: brillo 1.6s linear infinite;
+  --animate-brillo: brillo 1.6s var(--ease-panel) infinite;
 }
 
 @keyframes pulso {
@@ -204,10 +214,45 @@
 }
 @keyframes brillo {
   from {
-    background-position: 150% 0;
+    transform: translateX(-100%);
   }
   to {
-    background-position: -50% 0;
+    transform: translateX(100%);
+  }
+}
+/* Splash: anillos que aparecen, barrido que gira, salida a 1,1 s. Total 1,4 s. */
+@keyframes splash-anillo {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes splash-barrido {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+@keyframes splash-marca {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes splash-salida {
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 @keyframes respira {
@@ -264,11 +309,20 @@
     font-weight: 600;
     text-wrap: balance;
   }
-  /* Brillo de skeleton: barrido suave de izquierda a derecha. */
+  /* Brillo de skeleton: una sola franja clara que barre el contenedor
+     (transform, no background: no repinta cada bloque). */
   .brillo {
-    background: linear-gradient(90deg, var(--t-surface-2) 0%, var(--t-surface-2) 40%, var(--t-border) 50%, var(--t-surface-2) 60%, var(--t-surface-2) 100%);
-    background-size: 200% 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .brillo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, var(--t-brillo) 50%, transparent 100%);
     animation: var(--animate-brillo);
+    pointer-events: none;
   }
 }
 
@@ -283,7 +337,37 @@
   }
   .animate-pulso,
   .animate-barrido,
-  .brillo {
+  .brillo::after {
     animation: none !important;
   }
+}
+
+/* ───────────────────────── Splash ─────────────────────────
+   Va en el HTML del servidor para no parpadear. Un script en <head>
+   lo apaga (html[data-splash="no"]) si ya se vio en esta sesión o si
+   la persona pidió reducir movimiento. Nunca bloquea: deja pasar clics. */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--t-bg);
+  pointer-events: none;
+  animation: splash-salida 300ms var(--ease-panel) 1100ms forwards;
+}
+html[data-splash="no"] .splash {
+  display: none;
+}
+.splash-anillo {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  animation: splash-anillo 420ms var(--ease-base) both;
+}
+.splash-barrido {
+  transform-origin: 40px 40px;
+  animation: splash-barrido 1100ms var(--ease-panel) both;
+}
+.splash-marca {
+  animation: splash-marca 360ms var(--ease-base) 240ms both;
 }

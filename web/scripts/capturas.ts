@@ -12,6 +12,12 @@ async function main() {
   const browser = await chromium.launch();
   for (const v of vistas) {
     const ctx = await browser.newContext({ viewport: { width: v.width, height: v.height }, deviceScaleFactor: 1, reducedMotion: "reduce" });
+    // Sin splash: ya «se vio» en esta sesión.
+    await ctx.addInitScript(() => {
+      try {
+        sessionStorage.setItem("trafiker-splash", "1");
+      } catch {}
+    });
     const page = await ctx.newPage();
     for (const r of rutas) {
       if (solo && r.nombre !== solo) continue;

@@ -343,6 +343,12 @@ async function main() {
   for (const v of vistas) {
     for (const tema of ["dark", "light"]) {
       const ctx = await browser.newContext({ viewport: { width: v.width, height: v.height }, reducedMotion: "reduce" });
+      // Sin splash: ya «se vio» en esta sesión.
+      await ctx.addInitScript(() => {
+        try {
+          sessionStorage.setItem("trafiker-splash", "1");
+        } catch {}
+      });
       // tsx (esbuild) inyecta __name en funciones; lo definimos en la página.
       await ctx.addInitScript("globalThis.__name = (f) => f;");
       const page = await ctx.newPage();

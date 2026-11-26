@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Splash } from "@/components/firma/Splash";
 import { ProveedorApp } from "@/components/shell/Estado";
 import "./globals.css";
 
@@ -19,15 +20,19 @@ export const viewport: Viewport = {
   ],
 };
 
-const scriptTema = `(function(){try{var q=new URLSearchParams(location.search).get("tema");var t=q||localStorage.getItem("trafiker-tema-v2");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
+/* Antes de pintar: tema guardado (o ?tema=) y si toca mostrar el splash.
+   El splash se apaga si ya se vio en la sesión, si hay ?splash=0 o si la
+   persona pidió reducir movimiento. */
+const scriptInicio = `(function(){var d=document.documentElement;try{var q=new URLSearchParams(location.search);var t=q.get("tema")||localStorage.getItem("trafiker-tema-v2");if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}try{var r=matchMedia("(prefers-reduced-motion: reduce)").matches;if(r||q.get("splash")==="0"||sessionStorage.getItem("trafiker-splash")){d.setAttribute("data-splash","no")}else{sessionStorage.setItem("trafiker-splash","1")}}catch(e){d.setAttribute("data-splash","no")}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es-CO" data-theme="light" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: scriptTema }} />
+        <script dangerouslySetInnerHTML={{ __html: scriptInicio }} />
       </head>
       <body>
+        <Splash />
         <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-signal focus:px-3 focus:py-2 focus:text-sobre-senal">
           Saltar al contenido
         </a>
