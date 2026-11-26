@@ -77,8 +77,8 @@ export function CeldaMatriz({
             onMouseLeave={() => setAbierta(false)}
             className={cn(
               "grid h-11 w-11 place-items-center rounded-control transition-colors duration-150 ease-[var(--ease-base)] md:h-9 md:w-9",
-              "hover:bg-surface-2",
-              activa && "bg-surface-2",
+              "hover:bg-surface hover:shadow-e1",
+
             )}
           >
             <GlifoTono tono={articulo?.tono} linea={medio.linea} intensidad={articulo?.intensidad} />
@@ -92,10 +92,10 @@ export function CeldaMatriz({
               collisionPadding={16}
               onOpenAutoFocus={(e) => e.preventDefault()}
               onCloseAutoFocus={(e) => e.preventDefault()}
-              className="z-50 w-72 rounded-panel bg-surface-2 p-4 text-chico shadow-flota"
+              className="z-50 w-72 rounded-panel border border-border bg-surface p-4 text-chico shadow-e3"
             >
               <p className="text-dato text-muted">{hechoTitular}</p>
-              <p className="mt-2 text-lectura">{articulo.titular}</p>
+              <p className="mt-2 text-cuerpo font-semibold">{articulo.titular}</p>
               <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-dato">
                 <Meta etiqueta="Medio">{medio.nombre}</Meta>
                 <Meta etiqueta="Hora" mono>
@@ -103,8 +103,8 @@ export function CeldaMatriz({
                 </Meta>
                 <Meta etiqueta="Tono">{nombreTono[articulo.tono]}</Meta>
               </div>
-              <a href={articulo.url} className="mt-3 inline-block break-all font-mono text-dato text-signal underline underline-offset-2" target="_blank" rel="noreferrer">
-                {articulo.url.replace("https://", "")}
+              <a href={articulo.url} className="mt-3 inline-flex items-center gap-1 text-dato font-medium text-signal hover:underline" target="_blank" rel="noreferrer">
+                Abrir la nota original ↗
               </a>
             </Popover.Content>
           </Popover.Portal>
