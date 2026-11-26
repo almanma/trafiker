@@ -1,58 +1,87 @@
 @import "tailwindcss";
 
 /* ───────────────────────── Tokens por tema ─────────────────────────
-   Madrugada (oscuro, predeterminado) — luminancia calibrada con Linear.
-   Edición de mañana (claro) — estructura cálida del FT, papel propio.  */
+   Dirección B «Centro de control» (Linear, Vercel, Stripe).
+   Claro es el tema principal; oscuro es su gemelo para la madrugada.
+   Todo color de texto cumple AA (≥ 4,5:1) sobre bg, surface y surface-2.
+   signal = color de marca (verde petróleo): lejos del rojo, azul y morado
+   de los partidos.                                                       */
 :root,
-[data-theme="dark"] {
-  color-scheme: dark;
-  --t-bg: #0b0d12;
-  --t-surface: #12151c;
-  --t-surface-2: #1a1e27;
-  --t-border: rgba(237, 233, 225, 0.1);
-  --t-border-strong: rgba(237, 233, 225, 0.18);
-  --t-text: #ede9e1;
-  --t-muted: #8a8f98;
-  --t-signal: #ffb547;
-  --t-izquierda: #8b7cf6;
-  --t-izquierda-texto: #9d90f8;
-  --t-centro: #a8a29e;
-  --t-derecha: #e07a3f;
-  --t-verificado: #6fcf97;
-  --t-enganoso: #ffb547;
-  --t-falso: #f2665e;
-  --t-sin-evidencia: #8a8f98;
-  --t-sobre-senal: #0b0d12;
-  --t-input: rgba(255, 255, 255, 0.05);
-  --t-sombra-flota: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 30px 50px 0 rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --t-halo: rgba(215, 201, 175, 0.05) 0 0 20px 5px;
-  --t-grano-opacidad: 0.03;
-}
-
 [data-theme="light"] {
   color-scheme: light;
-  --t-bg: #f7f4ee;
-  --t-surface: #efeae1;
-  --t-surface-2: #e9e2d6;
-  --t-border: #e2d9cb;
-  --t-border-strong: #cdbfaa;
-  --t-text: #14161b;
-  --t-muted: #5e5a55;
-  --t-signal: #8a5a00;
-  --t-izquierda: #5b4bc4;
-  --t-izquierda-texto: #5b4bc4;
-  --t-centro: #5e5a55;
-  --t-derecha: #9a4a1c;
-  --t-verificado: #2f7a50;
-  --t-enganoso: #8a5a00;
-  --t-falso: #b42e26;
-  --t-sin-evidencia: #5e5a55;
-  --t-sobre-senal: #f7f4ee;
-  --t-input: rgba(20, 22, 27, 0.04);
-  --t-sombra-flota: rgba(77, 72, 69, 0.15) 0 1px 4px 0, rgba(77, 72, 69, 0.2) 0 8px 14px 0;
-  --t-halo: 0 0 0 0 transparent;
-  --t-grano-opacidad: 0.02;
+  --t-bg: #f7f8fa;
+  --t-surface: #ffffff;
+  --t-surface-2: #f1f3f6;
+  --t-border: #e4e7ec;
+  --t-border-strong: #ced4dc;
+  --t-text: #0e1116;
+  --t-muted: #5a6472;
+  --t-signal: #0f6b73;
+  --t-signal-hover: #0b575e;
+  --t-signal-suave: #e7f3f3;
+  --t-sobre-senal: #ffffff;
+  --t-input: #ffffff;
+  --t-izquierda: #5b45c9;
+  --t-izquierda-texto: #5b45c9;
+  --t-izquierda-suave: #efecfb;
+  --t-centro: #71675a;
+  --t-centro-suave: #f3f0ea;
+  --t-derecha: #a3481a;
+  --t-derecha-suave: #fbeee6;
+  --t-verificado: #17703f;
+  --t-verificado-suave: #e9f6ee;
+  --t-verificado-borde: #bce2ca;
+  --t-enganoso: #8f5200;
+  --t-enganoso-suave: #fef4e2;
+  --t-enganoso-borde: #f1d39c;
+  --t-falso: #b3261e;
+  --t-falso-suave: #fdecea;
+  --t-falso-borde: #f4c2be;
+  --t-sin-verificar: #4f5b69;
+  --t-sin-verificar-suave: #f0f2f5;
+  --t-sin-verificar-borde: #d3d9e0;
+  /* Elevación: 3 niveles en capas, sombra fría y difusa (nunca gris duro). */
+  --t-e1: 0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+  --t-e2: 0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --t-e3: 0 2px 6px 0 rgba(15, 23, 42, 0.05), 0 16px 32px -8px rgba(15, 23, 42, 0.14), 0 32px 64px -16px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --t-bg: #0b0d10;
+  --t-surface: #121519;
+  --t-surface-2: #1a1e24;
+  --t-border: rgba(255, 255, 255, 0.08);
+  --t-border-strong: rgba(255, 255, 255, 0.14);
+  --t-text: #edeff2;
+  --t-muted: #8f98a5;
+  --t-signal: #4fc1c6;
+  --t-signal-hover: #7dd3d6;
+  --t-signal-suave: rgba(79, 193, 198, 0.12);
+  --t-sobre-senal: #0b0d10;
+  --t-input: rgba(255, 255, 255, 0.04);
+  --t-izquierda: #9b8cfa;
+  --t-izquierda-texto: #a99cfa;
+  --t-izquierda-suave: rgba(155, 140, 250, 0.14);
+  --t-centro: #b5ac9e;
+  --t-centro-suave: rgba(181, 172, 158, 0.12);
+  --t-derecha: #e9894f;
+  --t-derecha-suave: rgba(233, 137, 79, 0.14);
+  --t-verificado: #5fd08f;
+  --t-verificado-suave: rgba(95, 208, 143, 0.12);
+  --t-verificado-borde: rgba(95, 208, 143, 0.32);
+  --t-enganoso: #f2b544;
+  --t-enganoso-suave: rgba(242, 181, 68, 0.12);
+  --t-enganoso-borde: rgba(242, 181, 68, 0.32);
+  --t-falso: #f2665e;
+  --t-falso-suave: rgba(242, 102, 94, 0.12);
+  --t-falso-borde: rgba(242, 102, 94, 0.32);
+  --t-sin-verificar: #9aa4b2;
+  --t-sin-verificar-suave: rgba(154, 164, 178, 0.12);
+  --t-sin-verificar-borde: rgba(154, 164, 178, 0.3);
+  --t-e1: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --t-e2: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --t-e3: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 24px 48px -12px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* ───────────────────────── Tailwind @theme ─────────────────────────
@@ -68,55 +97,75 @@
   --color-text: var(--t-text);
   --color-muted: var(--t-muted);
   --color-signal: var(--t-signal);
-  --color-izquierda: var(--t-izquierda);
-  --color-izquierda-texto: var(--t-izquierda-texto);
-  --color-centro: var(--t-centro);
-  --color-derecha: var(--t-derecha);
-  --color-verificado: var(--t-verificado);
-  --color-enganoso: var(--t-enganoso);
-  --color-falso: var(--t-falso);
-  --color-sin-evidencia: var(--t-sin-evidencia);
+  --color-signal-hover: var(--t-signal-hover);
+  --color-signal-suave: var(--t-signal-suave);
   --color-sobre-senal: var(--t-sobre-senal);
   --color-input: var(--t-input);
+  --color-izquierda: var(--t-izquierda);
+  --color-izquierda-texto: var(--t-izquierda-texto);
+  --color-izquierda-suave: var(--t-izquierda-suave);
+  --color-centro: var(--t-centro);
+  --color-centro-suave: var(--t-centro-suave);
+  --color-derecha: var(--t-derecha);
+  --color-derecha-suave: var(--t-derecha-suave);
+  --color-verificado: var(--t-verificado);
+  --color-verificado-suave: var(--t-verificado-suave);
+  --color-verificado-borde: var(--t-verificado-borde);
+  --color-enganoso: var(--t-enganoso);
+  --color-enganoso-suave: var(--t-enganoso-suave);
+  --color-enganoso-borde: var(--t-enganoso-borde);
+  --color-falso: var(--t-falso);
+  --color-falso-suave: var(--t-falso-suave);
+  --color-falso-borde: var(--t-falso-borde);
+  --color-sin-verificar: var(--t-sin-verificar);
+  --color-sin-verificar-suave: var(--t-sin-verificar-suave);
+  --color-sin-verificar-borde: var(--t-sin-verificar-borde);
+  --color-sin-evidencia: var(--t-sin-verificar);
   --color-transparent: transparent;
 
   --font-*: initial;
-  --font-serif: var(--font-newsreader), "Fraunces", Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  /* 8 tamaños. Nombres por uso, no por número. */
+  /* 8 tamaños. Nombres por uso, no por número. Geist, titulares en 600. */
   --text-*: initial;
   --text-dato: 12px;
-  --text-dato--line-height: 1.33;
+  --text-dato--line-height: 16px;
   --text-chico: 13px;
-  --text-chico--line-height: 1.45;
+  --text-chico--line-height: 20px;
   --text-cuerpo: 15px;
-  --text-cuerpo--line-height: 1.6;
-  --text-cuerpo--letter-spacing: -0.011em;
-  --text-lectura: 18px;
-  --text-lectura--line-height: 1.5;
-  --text-tarjeta: 24px;
-  --text-tarjeta--line-height: 1.17;
-  --text-secundario: 32px;
-  --text-secundario--line-height: 1.1;
-  --text-hero: 48px;
-  --text-hero--line-height: 1;
-  --text-hero--letter-spacing: -0.01em;
-  --text-portada: 72px;
-  --text-portada--line-height: 1;
-  --text-portada--letter-spacing: -0.01em;
+  --text-cuerpo--line-height: 24px;
+  --text-cuerpo--letter-spacing: -0.006em;
+  --text-lectura: 17px;
+  --text-lectura--line-height: 26px;
+  --text-lectura--letter-spacing: -0.01em;
+  --text-tarjeta: 18px;
+  --text-tarjeta--line-height: 24px;
+  --text-tarjeta--letter-spacing: -0.014em;
+  --text-secundario: 24px;
+  --text-secundario--line-height: 30px;
+  --text-secundario--letter-spacing: -0.02em;
+  --text-hero: 32px;
+  --text-hero--line-height: 38px;
+  --text-hero--letter-spacing: -0.024em;
+  --text-portada: 40px;
+  --text-portada--line-height: 46px;
+  --text-portada--letter-spacing: -0.028em;
 
   --radius-*: initial;
-  --radius-editorial: 3px;
-  --radius-control: 8px;
-  --radius-panel: 12px;
+  --radius-editorial: 6px; /* badges, etiquetas, celdas */
+  --radius-control: 8px; /* botones, inputs, chips de fuente */
+  --radius-panel: 12px; /* tarjetas, paneles, menús */
   --radius-pildora: 9999px;
   --radius-punto: 50%;
 
   --shadow-*: initial;
-  --shadow-flota: var(--t-sombra-flota);
-  --shadow-halo: var(--t-halo);
+  --shadow-e1: var(--t-e1); /* tarjetas en reposo */
+  --shadow-e2: var(--t-e2); /* hover, barra con scroll */
+  --shadow-e3: var(--t-e3); /* lo que flota: menús, drawer, paleta, toasts */
+  --shadow-flota: var(--t-e3);
+  --shadow-borde: inset 0 0 0 1px var(--t-border);
+  --shadow-borde-fuerte: inset 0 0 0 1px var(--t-border-strong);
   --shadow-regla: inset 0 -1px 0 0 var(--t-border);
   --shadow-regla-arriba: inset 0 1px 0 0 var(--t-border);
   --shadow-regla-izq: inset 1px 0 0 0 var(--t-border);
@@ -135,6 +184,7 @@
   --animate-pulso: pulso 2.4s var(--ease-panel) infinite;
   --animate-barrido: barrido 9s linear infinite;
   --animate-respira: respira 1.6s var(--ease-panel) infinite alternate;
+  --animate-brillo: brillo 1.6s linear infinite;
 }
 
 @keyframes pulso {
@@ -150,6 +200,14 @@
 @keyframes barrido {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes brillo {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
   }
 }
 @keyframes respira {
@@ -172,27 +230,16 @@
     color: var(--t-text);
     font-family: var(--font-sans);
     font-size: 15px;
-    line-height: 1.6;
-    letter-spacing: -0.011em;
-    font-feature-settings: "cv11", "ss01";
+    line-height: 24px;
+    letter-spacing: -0.006em;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100dvh;
-  }
-  /* Grano sutil solo sobre bg (decisión propia). */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: var(--t-grano-opacidad);
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
   h1,
   h2,
   h3 {
-    font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     text-wrap: balance;
   }
   p {
@@ -212,11 +259,16 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
-  .serif-display {
-    font-variation-settings: "opsz" 72;
+  /* Titular: Geist 600 (h1–h3 ya lo traen). Para titulares que no son h1–h3. */
+  .titular {
+    font-weight: 600;
+    text-wrap: balance;
   }
-  .serif-texto {
-    font-variation-settings: "opsz" 18;
+  /* Brillo de skeleton: barrido suave de izquierda a derecha. */
+  .brillo {
+    background: linear-gradient(90deg, var(--t-surface-2) 0%, var(--t-surface-2) 40%, var(--t-border) 50%, var(--t-surface-2) 60%, var(--t-surface-2) 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-brillo);
   }
 }
 
@@ -230,7 +282,8 @@
     scroll-behavior: auto !important;
   }
   .animate-pulso,
-  .animate-barrido {
+  .animate-barrido,
+  .brillo {
     animation: none !important;
   }
 }

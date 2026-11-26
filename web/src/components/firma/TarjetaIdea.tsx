@@ -44,7 +44,7 @@ export function TarjetaIdea({ idea, compacta = false, className }: { idea: Idea;
     return (
       <article className={cn("py-4 shadow-regla", className)}>
         <Encabezado idea={idea} />
-        <p className="mt-2 font-serif text-lectura serif-texto">{idea.gancho}</p>
+        <p className="mt-2 text-lectura">{idea.gancho}</p>
         <p className="mt-1 text-chico text-muted">{idea.angulo}</p>
       </article>
     );
@@ -59,7 +59,7 @@ export function TarjetaIdea({ idea, compacta = false, className }: { idea: Idea;
             <span className="h-1 w-full rounded-punto bg-signal" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-lectura serif-texto">{idea.titulo}</h3>
+            <h3 className="text-lectura">{idea.titulo}</h3>
             <p className="mt-1 text-chico text-muted">{idea.gancho}</p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export function TarjetaIdea({ idea, compacta = false, className }: { idea: Idea;
         <span className="absolute inset-x-3 top-0 h-3 rounded-editorial bg-surface-2 shadow-[inset_0_0_0_1px_var(--t-border)]" aria-hidden />
         <div className="relative rounded-editorial bg-surface p-3 shadow-[inset_0_0_0_1px_var(--t-border-strong)]">
           <Encabezado idea={idea} />
-          <h3 className="mt-2 text-lectura serif-texto">{idea.titulo}</h3>
+          <h3 className="mt-2 text-lectura">{idea.titulo}</h3>
           <ol className="mt-2 flex gap-1" aria-label="Láminas">
             {idea.guion.map((g, i) => (
               <li key={g} className="h-1 flex-1 rounded-punto bg-border-strong" title={g}>
@@ -93,8 +93,8 @@ export function TarjetaIdea({ idea, compacta = false, className }: { idea: Idea;
   return (
     <article className={cn("py-3 pl-3 shadow-regla-izq", className)}>
       <Encabezado idea={idea} />
-      <h3 className="mt-2 text-lectura serif-texto">{idea.titulo}</h3>
-      <p className="mt-1 font-serif text-cuerpo serif-texto text-muted">{idea.gancho}</p>
+      <h3 className="mt-2 text-lectura">{idea.titulo}</h3>
+      <p className="mt-1 text-cuerpo text-muted">{idea.gancho}</p>
       <div className="mt-2 flex flex-wrap gap-x-4 text-dato">
         <Meta etiqueta="Tono">{idea.tono}</Meta>
       </div>

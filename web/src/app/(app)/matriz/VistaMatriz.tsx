@@ -63,7 +63,7 @@ export function VistaMatriz() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-6">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Matriz de cobertura</h1>
+          <h1 className="text-secundario titular md:text-hero">Matriz de cobertura</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
             Qué medio contó qué, y con qué tono. Las filas son los hechos del día; las columnas, los medios agrupados por línea editorial.
           </p>
@@ -166,7 +166,7 @@ export function VistaMatriz() {
                   {filas.map((n, r) => (
                     <div role="row" key={n.id} className="contents">
                       <div role="rowheader" className="sticky left-0 z-10 flex items-center bg-bg py-1 pr-4 shadow-regla">
-                        <button type="button" onClick={() => abrirNoticia(n.id)} className="line-clamp-3 min-h-11 text-left font-serif text-chico serif-texto hover:text-signal md:line-clamp-2 md:min-h-0 md:text-cuerpo">
+                        <button type="button" onClick={() => abrirNoticia(n.id)} className="line-clamp-3 min-h-11 text-left text-chico hover:text-signal md:line-clamp-2 md:min-h-0 md:text-cuerpo">
                           {n.titular}
                         </button>
                       </div>
@@ -272,7 +272,7 @@ function TresMiradas() {
           </Chip>
         ))}
       </div>
-      <p className="mt-6 max-w-lectura font-serif text-lectura serif-texto text-muted">{n.titular}</p>
+      <p className="mt-6 max-w-lectura text-lectura text-muted">{n.titular}</p>
       <div className="mt-6 grid md:grid-cols-3">
         {lados.map((l, i) => {
           const m = n.tresMiradas![l];
@@ -281,7 +281,7 @@ function TresMiradas() {
           return (
             <section key={l} className={cn("py-6 md:px-6", reglaGrupo[l], i > 0 && "md:border-l md:border-border")} aria-label={l}>
               <EtiquetaLinea linea={l} ejemplo={medio.lineaEjemplo} />
-              <h2 className="mt-4 text-tarjeta serif-display">
+              <h2 className="mt-4 text-tarjeta titular">
                 <Resaltado m={m} linea={l} />
               </h2>
               <div className="mt-4 flex flex-wrap gap-x-4 text-dato">

@@ -39,11 +39,11 @@ function suscribirTema(cb: () => void) {
   obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   return () => obs.disconnect();
 }
-const leerTema = (): Tema => (document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+const leerTema = (): Tema => (document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
 export function ProveedorApp({ children }: { children: ReactNode }) {
   const [campanaId, setCampanaId] = useState(campanas[0].id);
-  const tema = useSyncExternalStore(suscribirTema, leerTema, () => "dark" as Tema);
+  const tema = useSyncExternalStore(suscribirTema, leerTema, () => "light" as Tema);
   const [noticiaAbierta, abrirNoticia] = useState<string | null>(null);
   const [ideas, setIdeas] = useState<Idea[]>(ideasIniciales);
   const [paletaAbierta, setPaletaAbierta] = useState(false);
@@ -53,7 +53,7 @@ export function ProveedorApp({ children }: { children: ReactNode }) {
     const nuevo = leerTema() === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", nuevo);
     try {
-      localStorage.setItem("trafiker-tema", nuevo);
+      localStorage.setItem("trafiker-tema-v2", nuevo);
     } catch {}
   }, []);
 

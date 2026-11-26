@@ -4,7 +4,7 @@ import { EstadoPantalla } from "@/components/firma/Estados";
 import { SkeletonLista } from "@/components/firma/Skeletons";
 import { VistaGuia } from "./VistaGuia";
 
-export const metadata: Metadata = { title: "Guía de marca" };
+export const metadata: Metadata = { title: "Sistema de diseño" };
 
 export default function PaginaGuia() {
   return (

@@ -46,7 +46,7 @@ export function VistaHoy() {
           </span>
           <DatosEjemplo className="lg:hidden" />
         </motion.div>
-        <motion.h1 variants={pieza} className="relative mt-4 text-hero serif-display md:text-portada">
+        <motion.h1 variants={pieza} className="relative mt-4 text-hero titular md:text-portada">
           {fechaLarga(brief.fecha)}
         </motion.h1>
         <motion.p variants={pieza} className="relative mt-3 text-lectura text-muted">
@@ -55,10 +55,10 @@ export function VistaHoy() {
       </header>
 
       <motion.section variants={pieza} aria-labelledby="treinta" className="py-8 shadow-regla">
-        <h2 id="treinta" className="text-lectura serif-texto text-muted">
+        <h2 id="treinta" className="text-lectura text-muted">
           En 30 segundos
         </h2>
-        <div className="mt-3 max-w-lectura font-serif text-tarjeta serif-texto">
+        <div className="mt-3 max-w-lectura text-tarjeta">
           {brief.enTreintaSegundos.map((f) => (
             <p key={f} className="mt-2 first:mt-0">
               {f}

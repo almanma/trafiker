@@ -1,80 +1,106 @@
 /**
- * Tokens de Trafiker. Fuente única de verdad: globals.css los replica en
- * variables CSS (:root = madrugada, [data-theme="light"] = edición de mañana)
- * y en @theme de Tailwind. El autochequeo compara los colores computados
- * contra esta lista.
+ * Tokens de Trafiker — dirección B «Centro de control».
+ * Fuente única de verdad para la guía y el autochequeo. globals.css los
+ * replica como variables CSS (:root/[data-theme="light"] = claro, principal;
+ * [data-theme="dark"] = oscuro) y en @theme de Tailwind.
  */
 
 export const color = {
-  madrugada: {
-    bg: "#0B0D12",
-    surface: "#12151C",
-    surface2: "#1A1E27",
-    border: "rgba(237,233,225,0.10)",
-    borderStrong: "rgba(237,233,225,0.18)",
-    text: "#EDE9E1",
-    muted: "#8A8F98",
-    signal: "#FFB547",
-    izquierda: "#8B7CF6",
-    izquierdaTexto: "#9D90F8",
-    centro: "#A8A29E",
-    derecha: "#E07A3F",
-    verificado: "#6FCF97",
-    enganoso: "#FFB547",
-    falso: "#F2665E",
-    sinEvidencia: "#8A8F98",
-    sobreSenal: "#0B0D12",
-    input: "rgba(255,255,255,0.05)",
+  claro: {
+    bg: "#F7F8FA",
+    surface: "#FFFFFF",
+    surface2: "#F1F3F6",
+    border: "#E4E7EC",
+    borderStrong: "#CED4DC",
+    text: "#0E1116",
+    muted: "#5A6472",
+    signal: "#0F6B73",
+    signalHover: "#0B575E",
+    signalSuave: "#E7F3F3",
+    sobreSenal: "#FFFFFF",
+    input: "#FFFFFF",
+    izquierda: "#5B45C9",
+    izquierdaTexto: "#5B45C9",
+    izquierdaSuave: "#EFECFB",
+    centro: "#71675A",
+    centroSuave: "#F3F0EA",
+    derecha: "#A3481A",
+    derechaSuave: "#FBEEE6",
+    verificado: "#17703F",
+    verificadoSuave: "#E9F6EE",
+    verificadoBorde: "#BCE2CA",
+    enganoso: "#8F5200",
+    enganosoSuave: "#FEF4E2",
+    enganosoBorde: "#F1D39C",
+    falso: "#B3261E",
+    falsoSuave: "#FDECEA",
+    falsoBorde: "#F4C2BE",
+    sinVerificar: "#4F5B69",
+    sinVerificarSuave: "#F0F2F5",
+    sinVerificarBorde: "#D3D9E0",
   },
-  manana: {
-    bg: "#F7F4EE",
-    surface: "#EFEAE1",
-    surface2: "#E9E2D6",
-    border: "#E2D9CB",
-    borderStrong: "#CDBFAA",
-    text: "#14161B",
-    muted: "#5E5A55",
-    signal: "#8A5A00",
-    izquierda: "#5B4BC4",
-    izquierdaTexto: "#5B4BC4",
-    centro: "#5E5A55",
-    derecha: "#9A4A1C",
-    verificado: "#2F7A50",
-    enganoso: "#8A5A00",
-    falso: "#B42E26",
-    sinEvidencia: "#5E5A55",
-    sobreSenal: "#F7F4EE",
-    input: "rgba(20,22,27,0.04)",
+  oscuro: {
+    bg: "#0B0D10",
+    surface: "#121519",
+    surface2: "#1A1E24",
+    border: "rgba(255,255,255,0.08)",
+    borderStrong: "rgba(255,255,255,0.14)",
+    text: "#EDEFF2",
+    muted: "#8F98A5",
+    signal: "#4FC1C6",
+    signalHover: "#7DD3D6",
+    signalSuave: "rgba(79,193,198,0.12)",
+    sobreSenal: "#0B0D10",
+    input: "rgba(255,255,255,0.04)",
+    izquierda: "#9B8CFA",
+    izquierdaTexto: "#A99CFA",
+    izquierdaSuave: "rgba(155,140,250,0.14)",
+    centro: "#B5AC9E",
+    centroSuave: "rgba(181,172,158,0.12)",
+    derecha: "#E9894F",
+    derechaSuave: "rgba(233,137,79,0.14)",
+    verificado: "#5FD08F",
+    verificadoSuave: "rgba(95,208,143,0.12)",
+    verificadoBorde: "rgba(95,208,143,0.32)",
+    enganoso: "#F2B544",
+    enganosoSuave: "rgba(242,181,68,0.12)",
+    enganosoBorde: "rgba(242,181,68,0.32)",
+    falso: "#F2665E",
+    falsoSuave: "rgba(242,102,94,0.12)",
+    falsoBorde: "rgba(242,102,94,0.32)",
+    sinVerificar: "#9AA4B2",
+    sinVerificarSuave: "rgba(154,164,178,0.12)",
+    sinVerificarBorde: "rgba(154,164,178,0.3)",
   },
 } as const;
 
-/** Escala tipográfica: 8 tamaños, ninguno más. */
+/** Escala tipográfica (Geist): 8 tamaños, ninguno más. Titulares en 600. */
 export const tipo = {
-  dato: { size: 12, line: 1.33, font: "mono" },
-  chico: { size: 13, line: 1.45, font: "sans" },
-  cuerpo: { size: 15, line: 1.6, tracking: "-0.011em", font: "sans" },
-  lectura: { size: 18, line: 1.5, font: "serif|sans" },
-  tarjeta: { size: 24, line: 1.17, font: "serif" },
-  secundario: { size: 32, line: 1.1, font: "serif" },
-  hero: { size: 48, line: 1, tracking: "-0.01em", font: "serif" },
-  portada: { size: 72, line: 1, tracking: "-0.01em", font: "serif" },
+  dato: { size: 12, line: 16, uso: "Metadatos, horas, cifras pequeñas" },
+  chico: { size: 13, line: 20, uso: "Controles, etiquetas, tablas" },
+  cuerpo: { size: 15, line: 24, tracking: "-0.006em", uso: "Texto de interfaz" },
+  lectura: { size: 17, line: 26, tracking: "-0.01em", uso: "Resúmenes para leer" },
+  tarjeta: { size: 18, line: 24, tracking: "-0.014em", peso: 600, uso: "Titular de tarjeta" },
+  secundario: { size: 24, line: 30, tracking: "-0.02em", peso: 600, uso: "Título de sección" },
+  hero: { size: 32, line: 38, tracking: "-0.024em", peso: 600, uso: "Título de página" },
+  portada: { size: 40, line: 46, tracking: "-0.028em", peso: 600, uso: "Noticia principal" },
 } as const;
 
 export const espacio = [4, 8, 12, 16, 24, 32, 48, 64, 96] as const;
 
 /** Tres radios con jerarquía (+ píldora solo para chips de filtro). */
 export const radio = {
-  editorial: 3, // bloques editoriales y noticias (FT, The Verge)
-  control: 8, // controles e inputs (Linear, Raycast)
-  panel: 12, // paneles flotantes, drawers, menús (Linear)
-  pildora: 9999, // solo chips de filtro
+  editorial: 6, // badges, etiquetas, celdas
+  control: 8, // botones, inputs, chips de fuente
+  panel: 12, // tarjetas, paneles, menús, drawer
+  pildora: 9999, // chips de filtro
 } as const;
 
+/** Elevación en 3 niveles. Sombras en capas, frías y difusas. */
 export const sombra = {
-  flotaMadrugada:
-    "inset 0 1px 0 0 rgba(255,255,255,0.1), 0 30px 50px 0 rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.06)",
-  flotaManana: "rgba(77,72,69,0.15) 0 1px 4px 0, rgba(77,72,69,0.2) 0 8px 14px 0",
-  halo: "rgba(215,201,175,0.05) 0 0 20px 5px",
+  e1: { uso: "Tarjetas en reposo", claro: "0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.04)" },
+  e2: { uso: "Hover y barra superior con scroll", claro: "0 1px 2px rgba(15,23,42,.04), 0 4px 12px -2px rgba(15,23,42,.08)" },
+  e3: { uso: "Lo que flota: menús, drawer, paleta, toasts", claro: "0 2px 6px rgba(15,23,42,.05), 0 16px 32px -8px rgba(15,23,42,.14)" },
 } as const;
 
 export const movimiento = {

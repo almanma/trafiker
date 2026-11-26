@@ -95,7 +95,7 @@ export function CeldaMatriz({
               className="z-50 w-72 rounded-panel bg-surface-2 p-4 text-chico shadow-flota"
             >
               <p className="text-dato text-muted">{hechoTitular}</p>
-              <p className="mt-2 font-serif text-lectura serif-texto">{articulo.titular}</p>
+              <p className="mt-2 text-lectura">{articulo.titular}</p>
               <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-dato">
                 <Meta etiqueta="Medio">{medio.nombre}</Meta>
                 <Meta etiqueta="Hora" mono>

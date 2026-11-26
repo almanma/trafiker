@@ -25,7 +25,7 @@ export function VistaVerificacion() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-6">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Verificación</h1>
+          <h1 className="text-secundario titular md:text-hero">Verificación</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
             Datos que circulan hoy, cruzados con fuentes oficiales y fact-checkers. Cada expediente enlaza a su fuente; la decisión final es tuya.
           </p>

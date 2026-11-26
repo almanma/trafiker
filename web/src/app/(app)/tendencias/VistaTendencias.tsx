@@ -93,7 +93,7 @@ export function VistaTendencias() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-6">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Tendencias</h1>
+          <h1 className="text-secundario titular md:text-hero">Tendencias</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">Qué temas ganan espacio y cuáles se apagan, medidos por el número de notas.</p>
         </div>
         <DatosEjemplo className="lg:hidden" />
@@ -132,7 +132,7 @@ export function VistaTendencias() {
 
           <div className="mt-12 grid gap-10 md:grid-cols-12">
             <section className="md:col-span-7" aria-labelledby="ranking">
-              <h2 id="ranking" className="pb-3 text-tarjeta serif-texto shadow-regla">
+              <h2 id="ranking" className="pb-3 text-tarjeta shadow-regla">
                 Temas que suben y bajan
               </h2>
               <ol>
@@ -157,13 +157,13 @@ export function VistaTendencias() {
                 ] as const
               ).map(([id, titulo, lista]) => (
                 <section key={id} aria-labelledby={id}>
-                  <h2 id={id} className="pb-3 text-tarjeta serif-texto shadow-regla">
+                  <h2 id={id} className="pb-3 text-tarjeta shadow-regla">
                     {titulo}
                   </h2>
                   <ul>
                     {lista.map((a) => (
                       <li key={a.nombre} className="flex items-baseline justify-between gap-4 py-2.5 shadow-regla">
-                        <span className={cn("text-cuerpo", id === "terminos" && "font-serif serif-texto")}>{a.nombre}</span>
+                        <span className={cn("text-cuerpo", id === "terminos" && "")}>{a.nombre}</span>
                         <span className="flex items-baseline gap-4 text-dato">
                           <span className="text-muted">
                             notas <Contador valor={a.menciones} />
@@ -182,7 +182,7 @@ export function VistaTendencias() {
         </PanelPestana>
         <PanelPestana value="trends" className="pt-6 outline-none">
           <div className="max-w-lectura py-10">
-            <h2 className="text-tarjeta serif-display">Google Trends, en preparación.</h2>
+            <h2 className="text-tarjeta titular">Google Trends, en preparación.</h2>
             <p className="mt-3 text-cuerpo text-muted">
               Aquí verás el interés de búsqueda por tema en Colombia, comparado con el volumen en medios. En el piloto todavía no se consulta.
             </p>

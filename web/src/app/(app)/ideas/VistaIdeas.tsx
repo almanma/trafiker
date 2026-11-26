@@ -67,7 +67,7 @@ function Columna({ id, ideas, children }: { id: ColumnaIdea; ideas: Idea[]; chil
       className={cn("flex min-h-48 flex-col rounded-editorial px-1 pb-4 transition-colors duration-150", isOver && "bg-surface")}
     >
       <div className="flex items-baseline justify-between pb-3 shadow-regla">
-        <h2 id={`col-${id}`} className="text-lectura serif-texto">
+        <h2 id={`col-${id}`} className="text-lectura">
           {nombreCol[id]}
         </h2>
         <span className="font-mono text-dato tabular text-muted" aria-label={`${ideas.length} ideas`}>
@@ -86,7 +86,7 @@ function Telefono({ idea }: { idea: Idea | undefined }) {
   if (!idea) return null;
   return (
     <aside aria-labelledby="guion" className="lg:sticky lg:top-20">
-      <h2 id="guion" className="pb-3 text-tarjeta serif-texto shadow-regla">
+      <h2 id="guion" className="pb-3 text-tarjeta shadow-regla">
         Vista previa del guion
       </h2>
       <div className="mt-4 flex justify-center">
@@ -96,7 +96,7 @@ function Telefono({ idea }: { idea: Idea | undefined }) {
             <p className="text-dato text-muted">
               {nombreFormato[idea.formato]} {idea.duracion && <span className="font-mono">{idea.duracion}</span>}
             </p>
-            <p className="mt-2 font-serif text-lectura serif-texto">{idea.gancho}</p>
+            <p className="mt-2 text-lectura">{idea.gancho}</p>
             <ol className="mt-4 flex flex-col gap-2 overflow-y-auto">
               {idea.guion.length ? (
                 idea.guion.map((g) => (
@@ -142,7 +142,7 @@ export function VistaIdeas() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-6">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Ideas</h1>
+          <h1 className="text-secundario titular md:text-hero">Ideas</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
             Lo que la IA sugiere publicar hoy, con su gancho y su dato de partida. Tú decides qué pasa a producción.
           </p>

@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { ProveedorApp } from "@/components/shell/Estado";
 import "./globals.css";
 
-const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin", "latin-ext"], axes: ["opsz"], style: ["normal"] });
-const inter = Inter({ variable: "--font-inter", subsets: ["latin", "latin-ext"] });
-const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin", "latin-ext"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: { default: "Trafiker", template: "%s | Trafiker" },
@@ -15,16 +14,16 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0B0D12" },
-    { media: "(prefers-color-scheme: light)", color: "#F7F4EE" },
+    { media: "(prefers-color-scheme: light)", color: "#F7F8FA" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0D10" },
   ],
 };
 
-const scriptTema = `(function(){try{var q=new URLSearchParams(location.search).get("tema");var t=q||localStorage.getItem("trafiker-tema");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
+const scriptTema = `(function(){try{var q=new URLSearchParams(location.search).get("tema");var t=q||localStorage.getItem("trafiker-tema-v2");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es-CO" data-theme="dark" suppressHydrationWarning className={`${newsreader.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html lang="es-CO" data-theme="light" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scriptTema }} />
       </head>

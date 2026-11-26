@@ -32,7 +32,7 @@ export function Expediente({
     return (
       <article className={cn("py-4 shadow-regla", className)}>
         <div className="flex items-start justify-between gap-3">
-          <p className="font-serif text-lectura serif-texto">{v.dato}</p>
+          <p className="text-lectura">{v.dato}</p>
           <SelloVeredicto veredicto={v.veredicto} />
         </div>
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-dato">
@@ -60,7 +60,7 @@ export function Expediente({
           </Meta>
           <Meta etiqueta="Quién">{v.dicho.quien}</Meta>
         </div>
-        <h3 id={`dato-${v.id}`} className="mt-3 max-w-[30ch] text-tarjeta serif-display">
+        <h3 id={`dato-${v.id}`} className="mt-3 max-w-[30ch] text-tarjeta titular">
           {v.dato}
         </h3>
         <a href={v.dicho.url} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center break-all font-mono text-dato text-muted underline md:min-h-0 decoration-border-strong underline-offset-2 hover:text-signal">

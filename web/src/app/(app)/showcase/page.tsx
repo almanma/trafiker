@@ -36,7 +36,7 @@ function Galeria() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-8 shadow-regla">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Showcase</h1>
+          <h1 className="text-secundario titular md:text-hero">Showcase</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
             Todas las pantallas en escritorio (1440 px) y móvil (390 px). Prueba los estados con <span className="font-mono text-dato">?estado=vacio</span>,{" "}
             <span className="font-mono text-dato">carga</span>, <span className="font-mono text-dato">error</span> o{" "}
@@ -50,7 +50,7 @@ function Galeria() {
         {pantallas.map((p, i) => (
           <li key={p.ruta} className={i === 0 ? "py-8 shadow-regla md:col-span-2" : "py-8 shadow-regla"}>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-tarjeta serif-display">
+              <h2 className="text-tarjeta titular">
                 <Link href={p.ruta} className="inline-flex min-h-11 items-center hover:text-signal">
                   {p.nombre}
                 </Link>

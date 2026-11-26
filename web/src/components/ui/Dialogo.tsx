@@ -42,7 +42,7 @@ export function Dialogo({
                 exit={{ opacity: 0, y: 8 }}
                 transition={transPanel}
               >
-                <D.Title className="font-serif text-tarjeta serif-display">{titulo}</D.Title>
+                <D.Title className="text-tarjeta titular">{titulo}</D.Title>
                 {descripcion ? (
                   <D.Description className="mt-1 text-chico text-muted">{descripcion}</D.Description>
                 ) : (
