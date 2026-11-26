@@ -71,9 +71,9 @@ export function VistaVerificacion() {
             revisado={revisados.includes(v.id)}
             onRevisado={() => {
               setRevisados((r) => (r.includes(v.id) ? r.filter((x) => x !== v.id) : [...r, v.id]));
-              toast(revisados.includes(v.id) ? "Marcado como pendiente" : "Marcado como revisado", { description: "Solo en esta sesión." });
+              toast.success(revisados.includes(v.id) ? "Marcado como pendiente" : "Marcado como revisado", { description: "Solo en esta sesión." });
             }}
-            onUsar={() => toast("Dato agregado a tus ideas", { description: "Con su fuente enlazada. Nada se publica." })}
+            onUsar={() => toast.success("Dato agregado a tus ideas", { description: "Con su fuente enlazada. Nada se publica." })}
           />
         ))}
         </div>

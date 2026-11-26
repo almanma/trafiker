@@ -146,8 +146,12 @@ export function VistaIdeas() {
 
   const mover = (idea: Idea, a: ColumnaIdea) => {
     if (idea.columna === a) return;
+    const antes = idea.columna;
     moverIdea(idea.id, a);
-    toast(`Movida a ${nombreCol[a]}`, { description: idea.titulo });
+    toast.success(`Movida a ${nombreCol[a]}`, {
+      description: idea.titulo,
+      action: { label: "Deshacer", onClick: () => moverIdea(idea.id, antes) },
+    });
   };
   const onDragEnd = (e: DragEndEvent) => {
     const idea = ideas.find((i) => i.id === e.active.id);

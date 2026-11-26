@@ -80,7 +80,7 @@ export function VistaMatriz() {
           <DatosEjemplo className="lg:hidden" />
           <Boton
             variante="secundario"
-            onClick={() => toast("Imagen exportada", { description: "Lleva la marca de agua de Trafiker. Se guardó solo en este equipo; nada se envía." })}
+            onClick={() => toast.success("Imagen exportada", { description: "Lleva la marca de agua de Trafiker. Se guardó solo en este equipo; nada se envía." })}
           >
             <ImageDown size={16} strokeWidth={1.75} aria-hidden />
             Exportar imagen

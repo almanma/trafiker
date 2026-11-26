@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { area, curveMonotoneX, line } from "d3-shape";
 import { cn } from "@/lib/cn";
+import { useReducirMovimiento } from "@/lib/movimiento";
 
 /** Sparkline que se dibuja una sola vez al montar. */
 export function Sparkline({
@@ -20,7 +21,7 @@ export function Sparkline({
   className?: string;
   etiqueta?: string;
 }) {
-  const reducir = useReducedMotion();
+  const reducir = useReducirMovimiento();
   const max = Math.max(...datos, 1);
   const x = (i: number) => (i / (datos.length - 1)) * (ancho - 4) + 2;
   const y = (v: number) => alto - 3 - (v / max) * (alto - 6);
@@ -44,9 +45,9 @@ export function Sparkline({
         strokeWidth="1.5"
         strokeLinecap="round"
         className={acento ? "stroke-signal" : "stroke-muted"}
-        initial={reducir ? false : { pathLength: 0 }}
+        initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: reducir ? 0 : 0.6, ease: [0.4, 0, 0.2, 1] }}
       />
       <circle cx={x(datos.length - 1)} cy={y(ultimo)} r="2" className={acento ? "fill-signal" : "fill-muted"} />
     </svg>

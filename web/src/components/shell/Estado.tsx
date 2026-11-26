@@ -78,7 +78,7 @@ export function ProveedorApp({ children }: { children: ReactNode }) {
       guion: [],
     };
     setIdeas((l) => [nueva, ...l]);
-    toast("Idea creada en Sugerida", { description: "Solo en esta sesión. Nada se envía." });
+    toast.success("Idea creada en Sugerida", { description: "Solo en esta sesión. Nada se envía." });
   }, []);
 
   const valor = useMemo(

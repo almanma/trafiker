@@ -1,8 +1,9 @@
 "use client";
 
-import { animate, useInView, useReducedMotion } from "framer-motion";
+import { animate, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useReducirMovimiento } from "@/lib/movimiento";
 
 /**
  * Cifra que cuenta desde 0 la primera vez que entra en pantalla (600 ms).
@@ -12,7 +13,7 @@ import { cn } from "@/lib/cn";
 export function Contador({ valor, className }: { valor: number; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const visto = useInView(ref, { once: true });
-  const reducir = useReducedMotion();
+  const reducir = useReducirMovimiento();
   const [v, setV] = useState(0);
   useEffect(() => {
     if (!visto || reducir) return;

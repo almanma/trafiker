@@ -274,7 +274,7 @@ export function Asistente() {
             <Boton
               variante="primario"
               onClick={() => {
-                toast("Campaña configurada", { description: "Guardado solo en esta sesión." });
+                toast.success("Campaña configurada", { description: "Guardado solo en esta sesión." });
                 router.push("/hoy");
               }}
             >

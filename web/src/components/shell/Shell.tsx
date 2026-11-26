@@ -3,8 +3,8 @@
 import * as Popover from "@radix-ui/react-popover";
 import { Command } from "cmdk";
 import * as D from "@radix-ui/react-dialog";
-import { CalendarDays, Check, ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
-import { motion } from "framer-motion";
+import { CalendarDays, Check, ChevronDown, CircleCheck, CircleX, Info, Menu, Moon, Search, Sun } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -17,6 +17,7 @@ import { DatosEjemplo } from "../firma/Basicos";
 import { DetalleNoticia } from "../firma/DetalleNoticia";
 import { Wordmark } from "../firma/Wordmark";
 import { Dialogo, Drawer } from "../ui/Dialogo";
+import { Tooltip } from "../ui/Tooltip";
 import { useApp } from "./Estado";
 import { atajos, secciones, secundarias } from "./Navegacion";
 
@@ -275,14 +276,27 @@ function BarraSuperior() {
           <span className="hidden md:inline">Buscar o ir a…</span>
           <kbd className="ml-auto hidden rounded-[4px] border border-border bg-surface-2 px-1.5 font-sans text-dato md:inline">⌘K</kbd>
         </button>
-        <button
-          type="button"
-          onClick={alternarTema}
-          className="grid h-11 w-11 place-items-center rounded-control text-muted transition-colors hover:bg-surface-2 hover:text-text md:h-9 md:w-9"
-          aria-label={tema === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-        >
-          {tema === "dark" ? <Sun size={16} strokeWidth={1.5} /> : <Moon size={16} strokeWidth={1.5} />}
-        </button>
+        <Tooltip texto={tema === "dark" ? "Modo claro" : "Modo oscuro"} lado="abajo">
+          <button
+            type="button"
+            onClick={alternarTema}
+            className="grid h-11 w-11 place-items-center overflow-hidden rounded-control text-muted transition-colors hover:bg-surface-2 hover:text-text md:h-9 md:w-9"
+            aria-label={tema === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={tema}
+                initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+                transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+                className="grid place-items-center"
+              >
+                {tema === "dark" ? <Sun size={16} strokeWidth={1.75} /> : <Moon size={16} strokeWidth={1.75} />}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+        </Tooltip>
       </div>
     </header>
   );
@@ -375,6 +389,11 @@ function AtajosGlobales() {
         return;
       }
       if (esCampoDeTexto(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "/") {
+        e.preventDefault();
+        setPaletaAbierta(true);
+        return;
+      }
       if (e.key === "?") {
         setAyudaAbierta(true);
         return;
@@ -448,12 +467,19 @@ export function Shell({ children }: { children: ReactNode }) {
           unstyled: true,
           classNames: {
             toast: "flex w-[calc(100vw-32px)] max-w-sm items-start gap-3 rounded-panel border border-border bg-surface px-4 py-3 text-chico text-text shadow-e3 md:w-96",
-            icon: "mt-0.5 text-signal",
+            icon: "mt-0.5 shrink-0",
+            content: "flex min-w-0 flex-1 flex-col gap-0.5",
+            actionButton: "ml-auto shrink-0 self-center rounded-control border border-border bg-surface px-2 py-1 text-dato font-medium text-text hover:bg-surface-2",
             title: "text-chico font-medium",
             description: "text-dato text-muted",
           },
         }}
         offset={{ bottom: 88, right: 16 }}
+        icons={{
+          success: <CircleCheck size={16} strokeWidth={2} className="text-verificado" />,
+          info: <Info size={16} strokeWidth={2} className="text-signal" />,
+          error: <CircleX size={16} strokeWidth={2} className="text-falso" />,
+        }}
       />
     </div>
   );

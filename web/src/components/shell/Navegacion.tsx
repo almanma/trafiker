@@ -20,6 +20,7 @@ export const secundarias = [
 
 export const atajos: { teclas: string[]; que: string }[] = [
   { teclas: ["⌘", "K"], que: "Abrir la paleta de comandos" },
+  { teclas: ["/"], que: "Buscar (abre la paleta)" },
   { teclas: ["J"], que: "Siguiente noticia" },
   { teclas: ["K"], que: "Noticia anterior" },
   { teclas: ["Enter"], que: "Abrir el detalle" },
@@ -28,6 +29,7 @@ export const atajos: { teclas: string[]; que: string }[] = [
   { teclas: ["G", "H"], que: "Ir a Hoy" },
   { teclas: ["G", "M"], que: "Ir a la Matriz" },
   { teclas: ["G", "T"], que: "Ir a Tendencias" },
+  { teclas: ["G", "V"], que: "Ir a Verificación" },
   { teclas: ["G", "I"], que: "Ir a Ideas" },
   { teclas: ["G", "F"], que: "Ir a Fuentes" },
   { teclas: ["?"], que: "Ver esta ayuda" },

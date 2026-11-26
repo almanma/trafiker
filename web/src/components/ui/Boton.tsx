@@ -36,7 +36,7 @@ export function Chip({ activo, className, ...p }: ButtonHTMLAttributes<HTMLButto
       aria-pressed={activo}
       className={cn(
         "inline-flex min-h-11 items-center gap-1.5 rounded-pildora border px-3 text-chico font-medium md:min-h-8",
-        "transition-colors duration-150 ease-[var(--ease-base)]",
+        "transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-base)] active:scale-[0.97]",
         activo ? "border-signal bg-signal-suave text-signal" : "border-border bg-surface text-muted hover:border-border-strong hover:text-text",
         className,
       )}

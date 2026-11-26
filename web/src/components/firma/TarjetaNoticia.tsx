@@ -49,7 +49,7 @@ export function TarjetaNoticia({
     <article
       aria-labelledby={`tn-${noticia.id}`}
       className={cn(
-        "group relative flex flex-col gap-3 rounded-panel border bg-surface p-4 focus-within:border-border-strong shadow-e1 transition-[box-shadow,border-color] duration-200 ease-[var(--ease-base)] md:p-5",
+        "group relative flex flex-col gap-3 rounded-panel border bg-surface p-4 has-[button:focus-visible]:border-signal has-[button:focus-visible]:ring-2 has-[button:focus-visible]:ring-signal has-[button:focus-visible]:shadow-e2 [&_button:focus-visible]:outline-none shadow-e1 transition-[box-shadow,border-color] duration-200 ease-[var(--ease-base)] md:p-5",
         "hover:border-border-strong hover:shadow-e2",
         seleccionada ? "border-signal" : "border-border",
         className,

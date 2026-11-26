@@ -293,9 +293,18 @@
   p {
     text-wrap: pretty;
   }
+  kbd {
+    font-family: inherit;
+    font-feature-settings: "tnum";
+  }
   :focus-visible {
     outline: 2px solid var(--t-signal);
     outline-offset: 2px;
+  }
+  /* Barras de scroll finas y del color del borde (Firefox y Chromium). */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--t-border-strong) transparent;
   }
   ::selection {
     background: var(--t-signal);

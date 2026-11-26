@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
 import { curveMonotoneX, line } from "d3-shape";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
@@ -11,6 +11,7 @@ import { Chip } from "@/components/ui/Boton";
 import { PanelPestana, Pestanas } from "@/components/ui/Pestanas";
 import { Tarjeta } from "@/components/ui/Tarjeta";
 import { cn } from "@/lib/cn";
+import { useReducirMovimiento } from "@/lib/movimiento";
 import { dias7, enAscenso, horas24, temas } from "@/mocks/tendencias";
 
 type Periodo = "h24" | "d7";
@@ -43,7 +44,7 @@ function marcasY(max: number) {
  */
 function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string }) {
   const [ref, ancho] = useAncho<HTMLDivElement>();
-  const reducir = useReducedMotion();
+  const reducir = useReducirMovimiento();
   const [i, setI] = useState<number | null>(null);
   const etiquetas = periodo === "h24" ? horas24 : dias7;
   const n = etiquetas.length;
@@ -118,9 +119,9 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
                 strokeLinejoin="round"
                 strokeWidth={on ? 2.5 : 1.5}
                 className={on ? "stroke-signal" : "stroke-border-strong"}
-                initial={reducir ? false : { pathLength: 0 }}
+                initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: on ? 0.9 : 0.6, ease: curva }}
+                transition={{ duration: reducir ? 0 : on ? 0.7 : 0.5, ease: curva }}
               />
             );
           })}
@@ -132,9 +133,9 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
             dy="0.32em"
             className="fill-text font-semibold"
             style={{ fontSize: 12 }}
-            initial={reducir ? false : { opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: reducir ? 0 : 0.7, duration: 0.2 }}
+            transition={{ delay: reducir ? 0 : 0.55, duration: reducir ? 0 : 0.2 }}
           >
             {elegido}
           </motion.text>
@@ -199,18 +200,22 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
   );
 }
 
+/** Crece al entrar en pantalla (400 ms); con «reducir movimiento», aparece ya completa. */
+function entrar(ancho: string, reducir: boolean) {
+  return reducir
+    ? { animate: { width: ancho }, transition: { duration: 0 } }
+    : { whileInView: { width: ancho }, viewport: { once: true }, transition: { duration: 0.4, ease: curva } };
+}
+
 /** Barra horizontal que crece desde 0 al entrar en pantalla. */
 function Barra({ valor, max, acento = false, className }: { valor: number; max: number; acento?: boolean; className?: string }) {
-  const reducir = useReducedMotion();
+  const reducir = useReducirMovimiento();
   return (
     <span className={cn("block h-2 overflow-hidden rounded-pildora bg-surface-2", className)} aria-hidden>
       <motion.span
         className={cn("block h-full rounded-pildora", acento ? "bg-signal" : "bg-border-strong")}
-        initial={reducir ? false : { width: 0 }}
-        whileInView={{ width: `${(valor / max) * 100}%` }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: curva }}
-        style={reducir ? { width: `${(valor / max) * 100}%` } : undefined}
+        initial={{ width: 0 }}
+        {...entrar(`${(valor / max) * 100}%`, reducir)}
       />
     </span>
   );
@@ -218,18 +223,15 @@ function Barra({ valor, max, acento = false, className }: { valor: number; max: 
 
 /** Barra divergente: sube hacia la derecha en marca, baja hacia la izquierda en gris. */
 function BarraDelta({ delta, max }: { delta: number; max: number }) {
-  const reducir = useReducedMotion();
+  const reducir = useReducirMovimiento();
   const pct = (Math.abs(delta) / max) * 50;
   return (
     <span className="relative block h-2 w-full rounded-pildora bg-surface-2" aria-hidden>
       <span className="absolute inset-y-[-3px] left-1/2 w-px bg-border-strong" />
       <motion.span
         className={cn("absolute inset-y-0 rounded-pildora", delta >= 0 ? "left-1/2 bg-signal" : "right-1/2 bg-muted")}
-        initial={reducir ? false : { width: 0 }}
-        whileInView={{ width: `${pct}%` }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: curva }}
-        style={reducir ? { width: `${pct}%` } : undefined}
+        initial={{ width: 0 }}
+        {...entrar(`${pct}%`, reducir)}
       />
     </span>
   );

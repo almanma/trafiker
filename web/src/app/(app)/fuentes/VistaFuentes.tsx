@@ -34,7 +34,7 @@ export function VistaFuentes() {
 
   const cambiarLinea = (id: string, linea: Linea) => {
     setLista((l) => l.map((m) => (m.id === id ? { ...m, linea, lineaEjemplo: false } : m)));
-    toast("Línea editorial actualizada", { description: "Solo en esta sesión." });
+    toast.success("Línea editorial actualizada", { description: "Solo en esta sesión." });
   };
 
   const agregar = (e: FormEvent<HTMLFormElement>) => {
@@ -59,7 +59,7 @@ export function VistaFuentes() {
       },
     ]);
     setDialogo(false);
-    toast("Fuente agregada", { description: `${nombre} se leerá en la próxima corrida. Línea: a validar.` });
+    toast.success("Fuente agregada", { description: `${nombre} se leerá en la próxima corrida. Línea: a validar.` });
   };
 
   const sanas = lista.filter((m) => m.salud === "ok").length;
