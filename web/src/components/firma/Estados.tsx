@@ -73,19 +73,38 @@ export function EstadoVacio({
   );
 }
 
-export function EstadoError({ className }: { className?: string }) {
+/**
+ * Error amable. Con `onReintentar` (error.tsx) vuelve a pintar la sección;
+ * sin él, recarga la ruta sin parámetros de estado.
+ */
+export function EstadoError({
+  titulo = "No pudimos leer esta sección.",
+  texto = "Una de las fuentes no respondió a tiempo. Tus datos anteriores siguen a salvo; prueba de nuevo o revisa el estado de las fuentes.",
+  onReintentar,
+  className,
+}: {
+  titulo?: string;
+  texto?: string;
+  onReintentar?: () => void;
+  className?: string;
+}) {
   return (
     <MarcoEstado role="alert" className={className}>
       <IlustracionCorte />
-      <h2 className="text-secundario">No pudimos leer esta sección.</h2>
-      <p className="max-w-md text-cuerpo text-muted">
-        Una de las fuentes no respondió a tiempo. Tus datos anteriores siguen a salvo; prueba de nuevo o revisa el estado de las fuentes.
-      </p>
+      <h2 className="text-secundario">{titulo}</h2>
+      <p className="max-w-md text-cuerpo text-muted">{texto}</p>
       <div className="mt-2 flex flex-wrap justify-center gap-2">
-        <Link href="?" className={clasesBoton("primario")}>
-          <RotateCw size={16} strokeWidth={1.5} aria-hidden />
-          Reintentar
-        </Link>
+        {onReintentar ? (
+          <Boton variante="primario" onClick={onReintentar}>
+            <RotateCw size={16} strokeWidth={1.75} aria-hidden />
+            Reintentar
+          </Boton>
+        ) : (
+          <Link href="?" className={clasesBoton("primario")}>
+            <RotateCw size={16} strokeWidth={1.75} aria-hidden />
+            Reintentar
+          </Link>
+        )}
         <Link href="/fuentes" className={clasesBoton("fantasma")}>
           Ver estado de las fuentes
         </Link>

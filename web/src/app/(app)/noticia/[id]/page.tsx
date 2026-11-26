@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { EstadoPantalla } from "@/components/firma/Estados";
 import { DetalleNoticia } from "@/components/firma/DetalleNoticia";
-import { SkeletonLista } from "@/components/firma/Skeletons";
+import { SkeletonDetalle } from "@/components/firma/Skeletons";
 import { noticiaPorId, noticias } from "@/mocks/noticias";
 
 export function generateStaticParams() {
@@ -29,8 +29,8 @@ export default async function PaginaNoticia({ params }: PageProps<"/noticia/[id]
         <span aria-hidden className="px-2">/</span>
         <span>{n.tema}</span>
       </nav>
-      <Suspense fallback={<SkeletonLista filas={3} />}>
-        <EstadoPantalla esqueleto={<SkeletonLista filas={3} />}>
+      <Suspense fallback={<SkeletonDetalle />}>
+        <EstadoPantalla esqueleto={<SkeletonDetalle />}>
           <DetalleNoticia noticia={n} />
         </EstadoPantalla>
       </Suspense>
