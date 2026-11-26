@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { DatosEjemplo } from "@/components/firma/Basicos";
 import { MuestraLinea } from "@/components/firma/BarraDeSesgo";
 import { Boton } from "@/components/ui/Boton";
-import { claseCampo } from "@/components/ui/campo";
+import { claseCampo } from "@/components/ui/Campo";
 import { Dialogo } from "@/components/ui/Dialogo";
 import { cn } from "@/lib/cn";
 import { lineas, medios as iniciales } from "@/mocks/medios";
@@ -63,7 +63,7 @@ export function VistaFuentes() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-6">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Fuentes</h1>
+          <h1 className="text-secundario titular md:text-hero">Fuentes</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
             Medios que lee el radar cada madrugada. La línea editorial la defines tú: mientras no la valides, queda como «a validar».
           </p>
@@ -102,7 +102,7 @@ export function VistaFuentes() {
               <tr key={m.id} className="shadow-regla">
                 <td className="py-3 pr-4">
                   <div className="flex items-center gap-3">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-editorial bg-surface-2 font-serif text-chico shadow-[inset_0_0_0_1px_var(--t-border)]" aria-hidden>
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-editorial bg-surface-2 text-chico shadow-[inset_0_0_0_1px_var(--t-border)]" aria-hidden>
                       {m.inicial}
                     </span>
                     <div className="min-w-0">

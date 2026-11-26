@@ -14,7 +14,6 @@ import { campanas } from "@/mocks/campanas";
 import { noticias, noticiaPorId } from "@/mocks/noticias";
 import { DatosEjemplo } from "../firma/Basicos";
 import { DetalleNoticia } from "../firma/DetalleNoticia";
-import { FiltroTinta } from "../firma/SelloVeredicto";
 import { Wordmark } from "../firma/Wordmark";
 import { Dialogo, Drawer } from "../ui/Dialogo";
 import { useApp } from "./Estado";
@@ -389,7 +388,6 @@ export function Shell({ children }: { children: ReactNode }) {
       <Ayuda />
       <DrawerGlobal />
       <AtajosGlobales />
-      <FiltroTinta />
       <Toaster
         position="bottom-right"
         toastOptions={{

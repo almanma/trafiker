@@ -10,7 +10,7 @@ import { DatosEjemplo, EtiquetaLinea } from "@/components/firma/Basicos";
 import { MapaColombia } from "@/components/firma/MapaColombia";
 import { Wordmark } from "@/components/firma/Wordmark";
 import { Boton, Chip } from "@/components/ui/Boton";
-import { claseCampo } from "@/components/ui/campo";
+import { claseCampo } from "@/components/ui/Campo";
 import { cn } from "@/lib/cn";
 import { transPanel } from "@/lib/movimiento";
 import { departamentos, temasSensibles } from "@/mocks/campanas";
@@ -72,7 +72,7 @@ export function Asistente() {
             {paso === 0 && (
               <div className="grid gap-10 md:grid-cols-12">
                 <div className="md:col-span-5">
-                  <h1 className="text-secundario serif-display md:text-hero">¿Dónde se juega tu campaña?</h1>
+                  <h1 className="text-secundario titular md:text-hero">¿Dónde se juega tu campaña?</h1>
                   <p className="mt-4 max-w-lectura text-cuerpo text-muted">Elige uno o varios territorios. El radar dará prioridad a lo que pase allí y a sus medios locales.</p>
                   <p className="mt-6 text-chico">
                     Elegidos{" "}
@@ -88,7 +88,7 @@ export function Asistente() {
 
             {paso === 1 && (
               <div className="max-w-3xl">
-                <h1 className="text-secundario serif-display md:text-hero">¿Qué medios lees?</h1>
+                <h1 className="text-secundario titular md:text-hero">¿Qué medios lees?</h1>
                 <p className="mt-4 max-w-lectura text-cuerpo text-muted">Marca los que importan en tu territorio. La línea editorial queda «a validar» hasta que la confirmes en Fuentes.</p>
                 <ul className="mt-8">
                   {medios.map((m) => {
@@ -110,7 +110,7 @@ export function Asistente() {
 
             {paso === 2 && (
               <div className="max-w-3xl">
-                <h1 className="text-secundario serif-display md:text-hero">¿Qué temas te pueden doler?</h1>
+                <h1 className="text-secundario titular md:text-hero">¿Qué temas te pueden doler?</h1>
                 <p className="mt-4 max-w-lectura text-cuerpo text-muted">Te avisaremos primero cuando uno de estos temas suba.</p>
                 <div className="mt-8 flex flex-wrap gap-2">
                   {temasSensibles.map((t) => (
@@ -125,7 +125,7 @@ export function Asistente() {
 
             {paso === 3 && (
               <div className="max-w-3xl">
-                <h1 className="text-secundario serif-display md:text-hero">¿Cómo habla tu candidato?</h1>
+                <h1 className="text-secundario titular md:text-hero">¿Cómo habla tu candidato?</h1>
                 <p className="mt-4 max-w-lectura text-cuerpo text-muted">Las ideas de contenido se ajustarán a estas palabras y a esta postura.</p>
                 <div className="mt-8">
                   <label htmlFor="clave" className="text-chico">
@@ -162,7 +162,7 @@ export function Asistente() {
 
             {fin && (
               <div className="max-w-3xl">
-                <h1 className="text-secundario serif-display md:text-hero">Listo. Te esperamos a las {hora}.</h1>
+                <h1 className="text-secundario titular md:text-hero">Listo. Te esperamos a las {hora}.</h1>
                 <p className="mt-4 max-w-lectura text-cuerpo text-muted">Elige a qué hora y por dónde recibir el brief. En esta fase solo se genera el archivo; nada se envía.</p>
                 <div className="mt-8 grid gap-8 sm:grid-cols-2">
                   <label className="flex flex-col gap-2 text-chico">

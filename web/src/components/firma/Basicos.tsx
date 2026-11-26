@@ -9,7 +9,7 @@ export function Meta({ etiqueta, children, mono = false, className }: { etiqueta
   return (
     <span className={cn("inline-flex items-baseline gap-1.5", className)}>
       <span className="text-muted">{etiqueta}</span>
-      <span className={cn("text-text", mono && "font-mono tabular text-dato")}>{children}</span>
+      <span className={cn("text-text", mono && "tabular")}>{children}</span>
     </span>
   );
 }
@@ -25,7 +25,7 @@ export function DeltaTendencia({ tendencia, delta, className }: { tendencia: Ten
     <span className={cn("inline-flex items-center gap-1", tendencia === "sube" ? "text-signal" : "text-muted", className)}>
       <Icono size={14} strokeWidth={1.5} aria-hidden />
       <span className="sr-only">{texto}</span>
-      <span className="font-mono text-dato tabular">
+      <span className="text-dato font-medium tabular">
         {delta > 0 ? "+" : delta < 0 ? "−" : "±"}
         {Math.abs(delta)} %
       </span>
@@ -43,7 +43,7 @@ export function ConfianzaIA({ valor, etiqueta = "Sugerido por IA", className }: 
       </span>
       <span className="inline-flex items-baseline gap-1">
         <span className="text-muted">confianza</span>
-        <span className="font-mono tabular text-text">{valor} %</span>
+        <span className="font-medium tabular text-text">{valor} %</span>
       </span>
     </span>
   );
@@ -51,7 +51,7 @@ export function ConfianzaIA({ valor, etiqueta = "Sugerido por IA", className }: 
 
 export function Etiqueta({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-editorial px-1.5 py-0.5 text-dato text-muted shadow-[inset_0_0_0_1px_var(--t-border-strong)]", className)}>
+    <span className={cn("inline-flex items-center gap-1.5 rounded-editorial border border-border bg-surface-2 px-1.5 py-0.5 text-dato text-muted", className)}>
       {children}
     </span>
   );
@@ -73,10 +73,10 @@ export function EtiquetaLinea({ linea, ejemplo = false, className }: { linea: Li
 export function DatosEjemplo({ className }: { className?: string }) {
   return (
     <span
-      className={cn("inline-flex items-center gap-1.5 font-mono text-dato text-muted", className)}
+      className={cn("inline-flex h-6 items-center gap-1.5 rounded-pildora border border-enganoso-borde bg-enganoso-suave px-2 text-dato font-medium text-enganoso", className)}
       title="Todo lo que ves son datos ficticios para validar la interfaz"
     >
-      <span className="h-1.5 w-1.5 rounded-punto bg-muted" aria-hidden />
+      <span className="h-1.5 w-1.5 rounded-punto bg-enganoso" aria-hidden />
       Datos de ejemplo
     </span>
   );
@@ -84,8 +84,8 @@ export function DatosEjemplo({ className }: { className?: string }) {
 
 export function TituloSeccion({ children, accion, id, className }: { children: ReactNode; accion?: ReactNode; id?: string; className?: string }) {
   return (
-    <div className={cn("flex items-baseline justify-between gap-4 pb-3 shadow-regla", className)}>
-      <h2 id={id} className="text-tarjeta serif-texto">
+    <div className={cn("flex items-center justify-between gap-4 pb-3", className)}>
+      <h2 id={id} className="text-tarjeta">
         {children}
       </h2>
       {accion}

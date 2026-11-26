@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { claseCampo } from "@/components/ui/campo";
+import { claseCampo } from "@/components/ui/Campo";
 import { Boton } from "@/components/ui/Boton";
 
 export function Acceso() {
@@ -13,7 +13,7 @@ export function Acceso() {
   };
   return (
     <>
-      <h1 className="text-secundario serif-display md:text-hero">Buenos días.</h1>
+      <h1 className="text-secundario titular md:text-hero">Buenos días.</h1>
       <p className="mt-3 text-cuerpo text-muted">Entra para ver el brief de hoy.</p>
       <form onSubmit={entrar} className="mt-8 flex flex-col gap-4">
         <label className="flex flex-col gap-1.5 text-chico">

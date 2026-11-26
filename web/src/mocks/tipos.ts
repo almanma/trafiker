@@ -1,7 +1,7 @@
 export type Linea = "izquierda" | "centro" | "derecha" | "a-validar";
 export type Tono = "favor" | "neutral" | "contra";
 export type Tendencia = "sube" | "estable" | "baja";
-export type Veredicto = "verificado" | "enganoso" | "falso" | "sin-evidencia";
+export type Veredicto = "verificado" | "enganoso" | "falso" | "sin-evidencia" | "sin-verificar";
 export type Formato = "video" | "carrusel" | "hilo";
 export type ColumnaIdea = "sugerida" | "produccion" | "publicada" | "descartada";
 
