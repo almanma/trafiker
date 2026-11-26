@@ -186,6 +186,9 @@
   --container-xl: 36rem;
   --container-2xl: 42rem;
   --container-3xl: 48rem;
+  --container-4xl: 56rem;
+  --container-5xl: 64rem;
+  --container-6xl: 72rem;
 
   --ease-base: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-panel: cubic-bezier(0.4, 0, 0.2, 1);
