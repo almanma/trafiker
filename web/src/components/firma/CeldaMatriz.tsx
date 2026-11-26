@@ -59,6 +59,22 @@ export function CeldaMatriz({
     ? `${medio.nombre}: ${nombreTono[articulo.tono]}, intensidad ${articulo.intensidad} de 3, ${articulo.hora}`
     : `${medio.nombre}: no cubrió`;
 
+  const clasesBotonCelda = cn(
+    "grid h-11 w-11 place-items-center rounded-control transition-colors duration-150 ease-[var(--ease-base)] md:h-9 md:w-9",
+    "hover:bg-surface hover:shadow-e1",
+  );
+
+  // Sin nota no hay nada que mostrar: botón simple, sin popover (menos trabajo al cargar).
+  if (!articulo) {
+    return (
+      <div role="gridcell" className="flex items-center justify-center" aria-label={etiqueta}>
+        <button type="button" tabIndex={activa ? 0 : -1} data-celda={`${fila}-${columna}`} aria-label={etiqueta} onFocus={onFoco} className={clasesBotonCelda}>
+          <GlifoTono linea={medio.linea} />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div role="gridcell" className="flex items-center justify-center" aria-label={etiqueta}>
       <Popover.Root open={abierta} onOpenChange={setAbierta}>

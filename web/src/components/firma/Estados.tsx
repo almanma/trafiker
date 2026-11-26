@@ -2,7 +2,6 @@
 
 import { RotateCw, WifiOff } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Boton, clasesBoton } from "../ui/Boton";
@@ -126,24 +125,4 @@ export function EstadoSinConexion({ className }: { className?: string }) {
       </Boton>
     </MarcoEstado>
   );
-}
-
-export type Estado = "normal" | "vacio" | "carga" | "error" | "sin-conexion";
-
-/** Lee ?estado= y muestra el estado diseñado correspondiente. Va dentro de <Suspense>. */
-export function EstadoPantalla({
-  children,
-  esqueleto,
-  vacio,
-}: {
-  children: ReactNode;
-  esqueleto: ReactNode;
-  vacio?: ReactNode;
-}) {
-  const estado = (useSearchParams().get("estado") ?? "normal") as Estado;
-  if (estado === "carga") return <>{esqueleto}</>;
-  if (estado === "error") return <EstadoError />;
-  if (estado === "sin-conexion") return <EstadoSinConexion />;
-  if (estado === "vacio") return <>{vacio ?? <EstadoVacio />}</>;
-  return <>{children}</>;
 }

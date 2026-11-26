@@ -12,11 +12,14 @@ export function Tooltip({
   texto,
   children,
   lado = "arriba",
+  alinear = "centro",
   className,
 }: {
   texto: ReactNode;
   children: ReactElement<{ "aria-describedby"?: string }>;
   lado?: "arriba" | "abajo";
+  /** "fin" para disparadores pegados al borde derecho: el globo no se sale de la pantalla. */
+  alinear?: "centro" | "fin";
   className?: string;
 }) {
   const id = useId();
@@ -48,9 +51,10 @@ export function Tooltip({
         role="tooltip"
         id={id}
         className={cn(
-          "pointer-events-none absolute left-1/2 z-50 w-max max-w-64 -translate-x-1/2 rounded-control bg-text px-2.5 py-1.5 text-dato font-medium text-bg shadow-e3",
+          "pointer-events-none absolute z-50 w-max max-w-64 rounded-control bg-text px-2.5 py-1.5 text-dato font-medium text-bg shadow-e3",
           "transition-[opacity,transform] duration-150 ease-[var(--ease-base)]",
           lado === "arriba" ? "bottom-full mb-2" : "top-full mt-2",
+          alinear === "centro" ? "left-1/2 -translate-x-1/2" : "right-0",
           visible ? "translate-y-0 opacity-100" : cn("opacity-0", lado === "arriba" ? "translate-y-1" : "-translate-y-1"),
           className,
         )}

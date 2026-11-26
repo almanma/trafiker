@@ -276,7 +276,7 @@ function BarraSuperior() {
           <span className="hidden md:inline">Buscar o ir a…</span>
           <kbd className="ml-auto hidden rounded-[4px] border border-border bg-surface-2 px-1.5 font-sans text-dato md:inline">⌘K</kbd>
         </button>
-        <Tooltip texto={tema === "dark" ? "Modo claro" : "Modo oscuro"} lado="abajo">
+        <Tooltip texto={tema === "dark" ? "Modo claro" : "Modo oscuro"} lado="abajo" alinear="fin">
           <button
             type="button"
             onClick={alternarTema}

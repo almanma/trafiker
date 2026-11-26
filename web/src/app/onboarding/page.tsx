@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { SkeletonFormulario } from "@/components/firma/Skeletons";
 import { Toaster } from "sonner";
-import { EstadoPantalla } from "@/components/firma/Estados";
+import { EstadoServidor } from "@/components/firma/EstadoServidor";
 import { Asistente } from "./Asistente";
 
 export const metadata: Metadata = { title: "Configurar campaña" };
 
-export default function PaginaOnboarding() {
+export default function PaginaOnboarding({ searchParams }: PageProps<"/onboarding">) {
   return (
     <Suspense fallback={null}>
-      <EstadoPantalla esqueleto={<SkeletonFormulario />}>
+      <EstadoServidor busqueda={searchParams} esqueleto={<SkeletonFormulario />}>
         <Asistente />
-      </EstadoPantalla>
+      </EstadoServidor>
       <Toaster />
     </Suspense>
   );

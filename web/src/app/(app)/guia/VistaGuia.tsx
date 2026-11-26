@@ -327,8 +327,8 @@ export function VistaGuia() {
           </Tarjeta>
         </Seccion>
 
-        <Seccion id="tablas" titulo="Tablas" texto="Encabezado fijo al hacer scroll, filas con hover y cifras a la derecha.">
-          <Tabla contenedor="max-h-72">
+        <Seccion id="tablas" titulo="Tablas" texto="Encabezado fijo cuando la tabla tiene scroll propio, filas con hover y cifras a la derecha.">
+          <Tabla>
             <caption className="sr-only">Medios de ejemplo</caption>
             <thead>
               <tr>

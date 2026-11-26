@@ -19,10 +19,7 @@ function Salud({ m }: { m: Medio }) {
   const ok = m.salud === "ok";
   return (
     <Insignia tono={ok ? "verificado" : "falso"}>
-      <span className="relative inline-flex h-1.5 w-1.5" aria-hidden>
-        {ok && <span className="absolute inset-0 animate-pulso rounded-punto bg-verificado" />}
-        <span className={cn("relative h-1.5 w-1.5 rounded-punto", ok ? "bg-verificado" : "bg-falso")} />
-      </span>
+      <span className={cn("h-1.5 w-1.5 rounded-punto", ok ? "bg-verificado" : "bg-falso")} aria-hidden />
       {ok ? "Responde" : "Error"}
     </Insignia>
   );

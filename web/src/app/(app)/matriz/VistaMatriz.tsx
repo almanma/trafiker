@@ -137,7 +137,7 @@ export function VistaMatriz() {
             <EstadoVacio titulo="Ningún hecho con esos filtros." texto="Prueba con otro tema o vuelve a incluir lo regional." accion={<Boton onClick={() => { setTema(""); setAlcance(null); }}>Quitar filtros</Boton>} />
           ) : (
             <>
-              <div className="max-h-[calc(100dvh-220px)] min-h-80 overflow-auto rounded-panel border border-border bg-surface shadow-e1" onPointerLeave={() => setEncima(null)}>
+              <div className="relative max-h-[calc(100dvh-220px)] min-h-80 overflow-auto rounded-panel border border-border bg-surface shadow-e1" onPointerLeave={() => setEncima(null)}>
                 <div
                   role="grid"
                   aria-label="Cobertura por hecho y medio. Usa las flechas para moverte."

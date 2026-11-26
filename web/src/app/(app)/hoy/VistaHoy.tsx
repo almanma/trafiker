@@ -14,6 +14,7 @@ import { useNavegacionNoticias } from "@/components/shell/useNavegacionNoticias"
 import { Insignia } from "@/components/ui/Insignia";
 import { Tarjeta } from "@/components/ui/Tarjeta";
 import { cn } from "@/lib/cn";
+import { useEsPrimeraCarga } from "@/lib/movimiento";
 import { fechaLarga } from "@/lib/fecha";
 import { campanas } from "@/mocks/campanas";
 import { nombreFormato } from "@/mocks/ideas";
@@ -23,7 +24,9 @@ import type { Noticia } from "@/mocks/tipos";
 import { verificaciones } from "@/mocks/verificaciones";
 import { movimiento } from "@/styles/tokens";
 
-/* La carga del brief entra escalonada: cada bloque 30 ms después del anterior. */
+/* El brief entra escalonado (cada bloque 30 ms después del anterior) al llegar
+   desde otra sección. En la carga directa llega visible: el splash ya cubre
+   ese momento y así el contenido no espera al JavaScript para verse. */
 const cascada: Variants = { oculto: {}, visible: { transition: { staggerChildren: movimiento.cascada.stagger } } };
 const pieza: Variants = {
   oculto: { opacity: 0, y: movimiento.cascada.y },
@@ -75,6 +78,7 @@ const enlaceSeccion = "inline-flex min-h-11 items-center gap-1 text-chico font-m
 
 export function VistaHoy() {
   const { abrirNoticia, campanaId, ideas } = useApp();
+  const primera = useEsPrimeraCarga();
   const campana = campanas.find((c) => c.id === campanaId)!;
   const ordenadas = useMemo(() => porRelevancia(noticias), []);
   const ids = useMemo(() => ordenadas.map((n) => n.id), [ordenadas]);
@@ -90,7 +94,7 @@ export function VistaHoy() {
   const fecha = fechaLarga(brief.fecha);
 
   return (
-    <motion.div initial="oculto" animate="visible" variants={cascada}>
+    <motion.div initial={primera ? false : "oculto"} animate="visible" variants={cascada}>
       {/* Encabezado: fecha, territorio y hora de actualización */}
       <motion.header variants={pieza} className="flex flex-wrap items-end justify-between gap-4">
         <div>

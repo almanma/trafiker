@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
  */
 export function Tabla({ className, contenedor, ...p }: HTMLAttributes<HTMLTableElement> & { contenedor?: string }) {
   return (
-    <div className={cn("overflow-auto rounded-panel border border-border bg-surface shadow-e1", contenedor)}>
+    <div className={cn("relative overflow-auto rounded-panel border border-border bg-surface shadow-e1", contenedor)}>
       <table className={cn("w-full border-separate border-spacing-0 text-left text-chico", className)} {...p} />
     </div>
   );

@@ -70,7 +70,7 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
   const valores = i === null ? [] : [...temas].map((t) => ({ tema: t.tema, v: t[periodo][i] })).sort((a, b) => b.v - a.v);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative min-w-0" style={{ minHeight: alto }}>
       {ancho > 0 && (
         <svg
           width={ancho}
@@ -88,7 +88,7 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
             e.preventDefault();
           }}
           onBlur={() => setI(null)}
-          className="touch-pan-y rounded-control outline-offset-4"
+          className="block max-w-full touch-pan-y rounded-control outline-offset-4"
         >
           {/* Rejilla y eje Y, recesivos */}
           {ticks.map((t) => (
@@ -173,7 +173,8 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
       )}
 
       {/* Los mismos datos, en tabla, para lectores de pantalla */}
-      <table className="sr-only">
+      <div className="sr-only">
+      <table>
         <caption>Notas por tema y {periodo === "h24" ? "hora" : "día"}</caption>
         <thead>
           <tr>
@@ -196,6 +197,7 @@ function GraficoLineas({ periodo, elegido }: { periodo: Periodo; elegido: string
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
@@ -278,7 +280,7 @@ export function VistaTendencias() {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h2 className="text-tarjeta">Notas por {periodo === "h24" ? "hora" : "día"}</h2>
-                <p className="text-dato text-muted">
+                <p className="max-w-lectura text-dato text-muted">
                   Resaltado: <span className="font-medium text-text">{elegido}</span>. Elige otro tema en la lista de abajo; pasa el cursor o usa las flechas para ver cifras.
                 </p>
               </div>
@@ -296,8 +298,8 @@ export function VistaTendencias() {
             </div>
           </Tarjeta>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-12">
-            <Tarjeta relleno={false} className="lg:col-span-7">
+          <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <Tarjeta relleno={false} className="min-w-0 lg:col-span-7">
               <div className="border-b border-border px-5 py-4">
                 <h2 id="ranking" className="text-tarjeta">
                   Temas que suben y bajan
@@ -334,7 +336,7 @@ export function VistaTendencias() {
               </ol>
             </Tarjeta>
 
-            <div className="flex flex-col gap-6 lg:col-span-5">
+            <div className="flex min-w-0 flex-col gap-6 lg:col-span-5">
               {(
                 [
                   ["actores", "Actores en ascenso", enAscenso.actores],
@@ -354,7 +356,7 @@ export function VistaTendencias() {
                       {lista.map((a, k) => (
                         <li key={a.nombre} className="border-b border-border px-5 py-3 last:border-b-0">
                           <div className="flex items-baseline justify-between gap-4">
-                            <span className="truncate text-chico font-medium">{id === "terminos" ? `«${a.nombre}»` : a.nombre}</span>
+                            <span className="min-w-0 truncate text-chico font-medium">{id === "terminos" ? `«${a.nombre}»` : a.nombre}</span>
                             <span className="flex shrink-0 items-baseline gap-3 text-dato">
                               <Contador valor={a.menciones} className="font-medium text-text" />
                               <span className="w-12 text-right font-medium text-signal">
