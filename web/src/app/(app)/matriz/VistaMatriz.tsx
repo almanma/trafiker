@@ -102,7 +102,7 @@ export function VistaMatriz() {
           <div className="flex flex-col gap-3 pb-4 lg:flex-row lg:flex-wrap lg:items-center" role="group" aria-label="Filtros">
             <label className="flex items-center gap-2 lg:w-56">
               <span className="sr-only">Tema</span>
-              <Selector value={tema} onChange={(e) => setTema(e.target.value)} className="md:h-9">
+              <Selector value={tema} onChange={(e) => setTema(e.target.value)} compacto>
                 <option value="">Todos los temas</option>
                 {temas.map((t) => (
                   <option key={t} value={t}>
