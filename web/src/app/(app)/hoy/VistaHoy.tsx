@@ -1,121 +1,281 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
+import { ArrowRight, Clapperboard, GalleryHorizontal, MessagesSquare, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useMemo } from "react";
-import { DatosEjemplo, TituloSeccion } from "@/components/firma/Basicos";
-import { Expediente } from "@/components/firma/Expediente";
-import { FilaTitular, NoticiaEstandar, NoticiaHero } from "@/components/firma/Noticias";
-import { BarridoRadar, PulsoRadar } from "@/components/firma/PulsoRadar";
-import { TarjetaIdea } from "@/components/firma/TarjetaIdea";
+import { useMemo, type ReactNode } from "react";
+import { DatosEjemplo } from "@/components/firma/Basicos";
+import { Contador } from "@/components/firma/Contador";
+import { PulsoRadar } from "@/components/firma/PulsoRadar";
+import { SelloVeredicto } from "@/components/firma/SelloVeredicto";
+import { TarjetaNoticia, veredictoDe } from "@/components/firma/TarjetaNoticia";
 import { useApp } from "@/components/shell/Estado";
 import { useNavegacionNoticias } from "@/components/shell/useNavegacionNoticias";
+import { Insignia } from "@/components/ui/Insignia";
+import { Tarjeta } from "@/components/ui/Tarjeta";
+import { cn } from "@/lib/cn";
+import { useEsPrimeraCarga } from "@/lib/movimiento";
 import { fechaLarga } from "@/lib/fecha";
 import { campanas } from "@/mocks/campanas";
+import { nombreFormato } from "@/mocks/ideas";
+import { medioPorId, medios } from "@/mocks/medios";
 import { brief, noticias } from "@/mocks/noticias";
+import type { Noticia } from "@/mocks/tipos";
 import { verificaciones } from "@/mocks/verificaciones";
 import { movimiento } from "@/styles/tokens";
 
-/* Único momento orquestado de la app: la carga del brief entra en cascada. */
+/* El brief entra escalonado (cada bloque 30 ms después del anterior) al llegar
+   desde otra sección. En la carga directa llega visible: el splash ya cubre
+   ese momento y así el contenido no espera al JavaScript para verse. */
 const cascada: Variants = { oculto: {}, visible: { transition: { staggerChildren: movimiento.cascada.stagger } } };
 const pieza: Variants = {
   oculto: { opacity: 0, y: movimiento.cascada.y },
   visible: { opacity: 1, y: 0, transition: { duration: movimiento.panel.duracion, ease: movimiento.base.curva } },
 };
 
-const enlace = "inline-flex min-h-11 items-center md:min-h-0 text-chico text-muted underline decoration-border-strong underline-offset-4 hover:text-text";
+const iconoFormato = { video: Clapperboard, carrusel: GalleryHorizontal, hilo: MessagesSquare };
+
+/** Relevancia = cuántos medios distintos cubren el hecho; empata la intensidad total. */
+function porRelevancia(lista: Noticia[]) {
+  const medios = (n: Noticia) => new Set(n.articulos.map((a) => a.medioId)).size;
+  const peso = (n: Noticia) => n.articulos.reduce((s, a) => s + a.intensidad, 0);
+  return [...lista].sort((a, b) => medios(b) - medios(a) || peso(b) - peso(a));
+}
+
+function Cifra({ etiqueta, valor, detalle, href }: { etiqueta: string; valor: ReactNode; detalle: string; href?: string }) {
+  const cuerpo = (
+    <>
+      <p className="text-dato font-medium text-muted">{etiqueta}</p>
+      <p className="mt-1 text-secundario font-semibold">{valor}</p>
+      <p className="mt-0.5 truncate text-dato text-muted">{detalle}</p>
+    </>
+  );
+  const clases = "block rounded-panel border border-border bg-surface px-4 py-3 shadow-e1";
+  return href ? (
+    <Link href={href} className={cn(clases, "transition-[box-shadow,border-color] duration-200 hover:border-border-strong hover:shadow-e2")}>
+      {cuerpo}
+    </Link>
+  ) : (
+    <div className={clases}>{cuerpo}</div>
+  );
+}
+
+function EncabezadoSeccion({ id, titulo, ayuda, accion }: { id: string; titulo: string; ayuda?: string; accion?: ReactNode }) {
+  return (
+    <div className="mb-3 flex items-end justify-between gap-4">
+      <div>
+        <h2 id={id} className="text-tarjeta">
+          {titulo}
+        </h2>
+        {ayuda && <p className="text-dato text-muted">{ayuda}</p>}
+      </div>
+      {accion}
+    </div>
+  );
+}
+
+const enlaceSeccion = "inline-flex min-h-11 items-center gap-1 text-chico font-medium text-signal hover:text-signal-hover md:min-h-0";
 
 export function VistaHoy() {
   const { abrirNoticia, campanaId, ideas } = useApp();
-  const ids = useMemo(() => noticias.map((n) => n.id), []);
-  const { seleccionada } = useNavegacionNoticias(ids);
+  const primera = useEsPrimeraCarga();
   const campana = campanas.find((c) => c.id === campanaId)!;
-  const [hero, n2, n3, n4, ...resto] = noticias;
-  const alertas = verificaciones.filter((v) => v.veredicto !== "verificado").slice(0, 3);
-  const sugeridas = ideas.filter((i) => i.columna === "sugerida").slice(0, 3);
-  const props = (id: string) => ({ onAbrir: abrirNoticia, seleccionada: seleccionada === id });
+  const ordenadas = useMemo(() => porRelevancia(noticias), []);
+  const ids = useMemo(() => ordenadas.map((n) => n.id), [ordenadas]);
+  const { seleccionada } = useNavegacionNoticias(ids);
+  const clave = ordenadas.slice(0, 7);
+  const resto = ordenadas.slice(7);
+
+  const porVerificar = verificaciones.filter((v) => v.veredicto !== "verificado");
+  const falsos = verificaciones.filter((v) => v.veredicto === "falso").length;
+  const sugeridas = ideas.filter((i) => i.columna === "sugerida");
+  const responden = medios.filter((m) => m.salud === "ok").length;
+  const suben = noticias.filter((n) => n.tendencia === "sube").length;
+  const fecha = fechaLarga(brief.fecha);
 
   return (
-    <motion.div initial="oculto" animate="visible" variants={cascada}>
-      <header className="relative overflow-hidden pb-10 shadow-regla">
-        <BarridoRadar className="absolute -right-24 -top-28 hidden h-[420px] w-[420px] md:block" />
-        <motion.div variants={pieza} className="relative flex flex-wrap items-center gap-x-6 gap-y-2">
-          <PulsoRadar hora={brief.actualizado} />
-          <span className="text-chico text-muted">
-            Territorio <span className="text-text">{campana.nombre}</span>
-          </span>
-          <DatosEjemplo className="lg:hidden" />
-        </motion.div>
-        <motion.h1 variants={pieza} className="relative mt-4 text-hero serif-display md:text-portada">
-          {fechaLarga(brief.fecha)}
-        </motion.h1>
-        <motion.p variants={pieza} className="relative mt-3 text-lectura text-muted">
-          {brief.saludo}
-        </motion.p>
-      </header>
-
-      <motion.section variants={pieza} aria-labelledby="treinta" className="py-8 shadow-regla">
-        <h2 id="treinta" className="text-lectura serif-texto text-muted">
-          En 30 segundos
-        </h2>
-        <div className="mt-3 max-w-lectura font-serif text-tarjeta serif-texto">
-          {brief.enTreintaSegundos.map((f) => (
-            <p key={f} className="mt-2 first:mt-0">
-              {f}
-            </p>
-          ))}
+    <motion.div initial={primera ? false : "oculto"} animate="visible" variants={cascada}>
+      {/* Encabezado: fecha, territorio y hora de actualización */}
+      <motion.header variants={pieza} className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <PulsoRadar hora={brief.actualizado} />
+            <span className="text-chico text-muted">
+              Territorio <span className="font-medium text-text">{campana.nombre}</span>
+            </span>
+          </div>
+          <h1 className="mt-2 text-hero md:text-portada">{fecha.charAt(0).toUpperCase() + fecha.slice(1)}</h1>
+          <p className="mt-1 text-cuerpo text-muted">{brief.saludo}</p>
         </div>
-      </motion.section>
+        <DatosEjemplo className="lg:hidden" />
+      </motion.header>
 
-      <div className="grid gap-x-8 gap-y-10 pt-10 md:grid-cols-12">
-        {/* Columna principal (9): hero, bloque 6+3+3 y lista de titulares, sobre su propia rejilla de 12. */}
-        <div className="grid gap-x-8 gap-y-10 md:col-span-8 md:grid-cols-12 lg:col-span-9">
-          <motion.div variants={pieza} className="md:col-span-12">
-            <NoticiaHero noticia={hero} {...props(hero.id)} />
-          </motion.div>
-          <motion.div variants={pieza} className="md:col-span-12 lg:col-span-6">
-            <NoticiaEstandar noticia={n2} variante="amplia" {...props(n2.id)} className="h-full" />
-          </motion.div>
-          <motion.div variants={pieza} className="md:col-span-6 lg:col-span-3 lg:pl-8 lg:shadow-regla-izq">
-            <NoticiaEstandar noticia={n3} {...props(n3.id)} className="h-full" />
-          </motion.div>
-          <motion.div variants={pieza} className="md:col-span-6 lg:col-span-3 lg:pl-8 lg:shadow-regla-izq">
-            <NoticiaEstandar noticia={n4} {...props(n4.id)} className="h-full" />
-          </motion.div>
-          <motion.section variants={pieza} className="md:col-span-12" aria-labelledby="tambien">
-            <TituloSeccion id="tambien">También en el radar</TituloSeccion>
-            <div className="grid gap-x-8 sm:grid-cols-2 xl:grid-cols-4">
-              {resto.map((n) => (
-                <FilaTitular key={n.id} noticia={n} {...props(n.id)} />
+      {/* Cifras del día: todas se cuentan de los datos, ninguna es inventada */}
+      <motion.div variants={pieza} className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Cifra etiqueta="Hechos del día" valor={<Contador valor={noticias.length} />} detalle={`${suben} van en ascenso`} />
+        <Cifra etiqueta="Medios leídos" valor={<><Contador valor={responden} /><span className="text-lectura font-medium text-muted"> de {medios.length}</span></>} detalle={`${medios.length - responden} sin responder`} href="/fuentes" />
+        <Cifra etiqueta="Por verificar" valor={<Contador valor={porVerificar.length} />} detalle={`${falsos} marcados como falsos`} href="/verificacion" />
+        <Cifra etiqueta="Ideas sugeridas" valor={<Contador valor={sugeridas.length} />} detalle="Listas para revisar" href="/ideas" />
+      </motion.div>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="flex min-w-0 flex-col gap-8">
+          {/* Resumen ejecutivo */}
+          <motion.section variants={pieza} aria-labelledby="resumen">
+            <Tarjeta className="md:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 id="resumen" className="text-tarjeta">
+                  Resumen ejecutivo
+                </h2>
+                <Insignia tono="marca">
+                  <Sparkles size={12} strokeWidth={2} aria-hidden />
+                  Generado por IA, revisa las fuentes
+                </Insignia>
+              </div>
+              <ol className="mt-4 flex flex-col gap-3">
+                {brief.enTreintaSegundos.map((f, i) => (
+                  <li key={f} className="flex gap-3">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-pildora bg-signal-suave text-dato font-semibold text-signal tabular" aria-hidden>
+                      {i + 1}
+                    </span>
+                    <p className="max-w-lectura text-lectura">{f}</p>
+                  </li>
+                ))}
+              </ol>
+            </Tarjeta>
+          </motion.section>
+
+          {/* Hechos clave por relevancia */}
+          <section aria-labelledby="hechos">
+            <motion.div variants={pieza}>
+              <EncabezadoSeccion
+                id="hechos"
+                titulo="Hechos clave"
+                ayuda="Ordenados por relevancia: cuántos medios distintos los cubren."
+                accion={
+                  <Link href="/matriz" className={enlaceSeccion}>
+                    Ver en la matriz <ArrowRight size={14} strokeWidth={2} aria-hidden />
+                  </Link>
+                }
+              />
+            </motion.div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {clave.map((n, i) => (
+                <motion.div key={n.id} variants={pieza} className={i === 0 ? "md:col-span-2" : undefined}>
+                  <TarjetaNoticia
+                    noticia={n}
+                    rango={i + 1}
+                    destacada={i === 0}
+                    maxFuentes={i === 0 ? 5 : 3}
+                    onAbrir={abrirNoticia}
+                    seleccionada={seleccionada === n.id}
+                    className="h-full"
+                  />
+                </motion.div>
               ))}
             </div>
+          </section>
+
+          {/* El resto, en lista compacta */}
+          <motion.section variants={pieza} aria-labelledby="tambien">
+            <EncabezadoSeccion id="tambien" titulo="También en el radar" />
+            <Tarjeta relleno={false}>
+              <ol>
+                {resto.map((n, i) => {
+                  const cubren = new Set(n.articulos.map((a) => a.medioId)).size;
+                  return (
+                    <li key={n.id} className={cn("group relative flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-2", seleccionada === n.id && "bg-surface-2")}>
+                      <span className="w-6 shrink-0 text-dato font-semibold text-muted tabular">#{i + 8}</span>
+                      <div className="min-w-0 flex-1">
+                        <button
+                          type="button"
+                          data-noticia={n.id}
+                          onClick={() => abrirNoticia(n.id)}
+                          className="text-left text-cuerpo font-medium after:absolute after:inset-0 group-hover:text-signal"
+                        >
+                          {n.titular}
+                        </button>
+                        <p className="text-dato text-muted">
+                          {n.tema} · {n.territorio}
+                        </p>
+                      </div>
+                      <span className="hidden shrink-0 text-dato text-muted sm:inline">
+                        <span className="font-medium text-text tabular">{cubren}</span> medios
+                      </span>
+                      <SelloVeredicto veredicto={veredictoDe(n.id)} className="relative" />
+                    </li>
+                  );
+                })}
+              </ol>
+            </Tarjeta>
           </motion.section>
         </div>
 
-        <aside className="flex flex-col gap-10 md:col-span-4 md:pl-8 md:shadow-regla-izq lg:col-span-3" aria-label="Para verificar e ideas">
+        {/* Columna derecha: lo que hay que revisar y lo que se puede publicar */}
+        <aside className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start" aria-label="Para verificar e ideas">
           <motion.section variants={pieza} aria-labelledby="para-verificar">
-            <TituloSeccion id="para-verificar" accion={<Link href="/verificacion" className={enlace}>Ver todo</Link>}>
-              Para verificar
-            </TituloSeccion>
-            {alertas.map((v) => (
-              <Expediente key={v.id} v={v} compacto />
-            ))}
+            <Tarjeta relleno={false}>
+              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                <h2 id="para-verificar" className="text-chico font-semibold">
+                  Para verificar
+                </h2>
+                <Link href="/verificacion" className={enlaceSeccion}>
+                  Ver todo
+                </Link>
+              </div>
+              <ul>
+                {porVerificar.slice(0, 3).map((v) => (
+                  <li key={v.id} className="border-b border-border px-4 py-3 last:border-b-0">
+                    <SelloVeredicto veredicto={v.veredicto} />
+                    <p className="mt-1.5 text-chico font-medium">«{v.dato.replace(/^"|"$/g, "")}»</p>
+                    <p className="mt-1 text-dato text-muted">
+                      Dicho en {medioPorId[v.dicho.medioId].nombre} · contraste{" "}
+                      <a href={v.contraste.url} target="_blank" rel="noreferrer" className="font-medium text-signal underline-offset-2 hover:underline">
+                        {v.contraste.fuente}
+                      </a>
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Tarjeta>
           </motion.section>
+
           <motion.section variants={pieza} aria-labelledby="ideas-hoy">
-            <TituloSeccion id="ideas-hoy" accion={<Link href="/ideas" className={enlace}>Tablero</Link>}>
-              Ideas para hoy
-            </TituloSeccion>
-            {sugeridas.map((i) => (
-              <TarjetaIdea key={i.id} idea={i} compacta />
-            ))}
+            <Tarjeta relleno={false}>
+              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                <h2 id="ideas-hoy" className="text-chico font-semibold">
+                  Ideas para hoy
+                </h2>
+                <Link href="/ideas" className={enlaceSeccion}>
+                  Tablero
+                </Link>
+              </div>
+              <ul>
+                {sugeridas.slice(0, 3).map((i) => {
+                  const Icono = iconoFormato[i.formato];
+                  return (
+                    <li key={i.id} className="border-b border-border px-4 py-3 last:border-b-0">
+                      <span className="inline-flex items-center gap-1.5 text-dato text-muted">
+                        <Icono size={14} strokeWidth={1.75} aria-hidden />
+                        {nombreFormato[i.formato]}
+                        {i.duracion && <span className="tabular">{i.duracion}</span>}
+                      </span>
+                      <p className="mt-1 text-chico font-medium">{i.titulo}</p>
+                      <p className="mt-0.5 text-dato text-muted">{i.angulo}</p>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Tarjeta>
           </motion.section>
+
+          <motion.p variants={pieza} className="hidden px-1 text-dato text-muted lg:block">
+            <kbd className="rounded-[4px] border border-border bg-surface px-1">J</kbd> <kbd className="rounded-[4px] border border-border bg-surface px-1">K</kbd> para moverte,{" "}
+            <kbd className="rounded-[4px] border border-border bg-surface px-1">Enter</kbd> abre, <kbd className="rounded-[4px] border border-border bg-surface px-1">E</kbd> crea idea,{" "}
+            <kbd className="rounded-[4px] border border-border bg-surface px-1">?</kbd> todos los atajos.
+          </motion.p>
         </aside>
       </div>
-
-      <p className="mt-10 text-dato text-muted">
-        Atajos: <kbd className="font-mono">J</kbd> y <kbd className="font-mono">K</kbd> para moverte, <kbd className="font-mono">Enter</kbd> para abrir,{" "}
-        <kbd className="font-mono">E</kbd> para crear idea, <kbd className="font-mono">?</kbd> para ver todos.
-      </p>
     </motion.div>
   );
 }

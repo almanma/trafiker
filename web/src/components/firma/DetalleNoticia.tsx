@@ -30,18 +30,18 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
           <DeltaTendencia tendencia={noticia.tendencia} delta={noticia.delta} />
         </span>
       </FilaMeta>
-      <motion.h1 layoutId={enDrawer ? `titular-${noticia.id}` : undefined} className="max-w-[24ch] text-secundario serif-display md:text-hero">
+      <motion.h1 layoutId={enDrawer ? `titular-${noticia.id}` : undefined} className="max-w-[24ch] text-secundario titular md:text-hero">
         {noticia.titular}
       </motion.h1>
 
       <section className="mt-8 max-w-lectura" aria-labelledby="resumen-ia">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 id="resumen-ia" className="text-lectura serif-texto">
+          <h2 id="resumen-ia" className="text-lectura">
             Resumen neutral
           </h2>
           <ConfianzaIA valor={noticia.confianzaIA} etiqueta="Resumen por IA" />
         </div>
-        <p className="mt-2 font-serif text-lectura serif-texto">{noticia.resumenIA}</p>
+        <p className="mt-2 text-lectura">{noticia.resumenIA}</p>
       </section>
 
       <div className="mt-6 max-w-md">
@@ -50,7 +50,7 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
 
       <div className="mt-10 grid gap-10 md:grid-cols-12">
         <section className="md:col-span-7" aria-labelledby="por-medio">
-          <h2 id="por-medio" className="pb-3 text-tarjeta serif-texto shadow-regla">
+          <h2 id="por-medio" className="pb-3 text-tarjeta shadow-regla">
             Cómo lo cuenta cada medio
           </h2>
           {grupos.map((g) => (
@@ -63,7 +63,7 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
                       <GlifoTono tono={a.tono} linea={g.id} intensidad={a.intensidad} />
                     </span>
                     <div className="min-w-0">
-                      <a href={a.url} target="_blank" rel="noreferrer" className="font-serif text-lectura serif-texto hover:text-signal">
+                      <a href={a.url} target="_blank" rel="noreferrer" className="text-lectura hover:text-signal">
                         {a.titular}
                       </a>
                       <FilaMeta className="mt-1 text-dato">
@@ -83,7 +83,7 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
 
         <aside className="flex flex-col gap-10 md:col-span-5">
           <section aria-labelledby="linea-tiempo">
-            <h2 id="linea-tiempo" className="pb-3 text-tarjeta serif-texto shadow-regla">
+            <h2 id="linea-tiempo" className="pb-3 text-tarjeta shadow-regla">
               Línea de tiempo
             </h2>
             <ol className="mt-4 border-l border-border-strong pl-4">
@@ -98,7 +98,7 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
           </section>
 
           <section aria-labelledby="actores">
-            <h2 id="actores" className="pb-3 text-tarjeta serif-texto shadow-regla">
+            <h2 id="actores" className="pb-3 text-tarjeta shadow-regla">
               Actores mencionados
             </h2>
             <ul>
@@ -114,7 +114,7 @@ export function DetalleNoticia({ noticia, enDrawer = false }: { noticia: Noticia
           </section>
 
           <section aria-labelledby="datos-clave">
-            <h2 id="datos-clave" className="pb-3 text-tarjeta serif-texto shadow-regla">
+            <h2 id="datos-clave" className="pb-3 text-tarjeta shadow-regla">
               Datos clave
             </h2>
             <ul>

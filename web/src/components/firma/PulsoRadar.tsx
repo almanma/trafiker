@@ -12,7 +12,7 @@ export function PulsoRadar({ hora, className }: { hora: string; className?: stri
         <span className="relative h-2.5 w-2.5 rounded-punto bg-signal" />
       </span>
       <span>Actualizado</span>
-      <time className="font-mono text-dato tabular text-text" dateTime={`2026-11-24T${hora}:00-05:00`}>
+      <time className="text-dato tabular text-text" dateTime={`2026-11-24T${hora}:00-05:00`}>
         {hora}
       </time>
     </span>

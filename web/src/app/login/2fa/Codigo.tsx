@@ -61,7 +61,7 @@ export function Codigo() {
 
   return (
     <>
-      <h1 className="text-secundario serif-display md:text-hero">Segundo factor.</h1>
+      <h1 className="text-secundario titular md:text-hero">Segundo factor.</h1>
       <p className="mt-3 text-cuerpo text-muted">Escanea el código con Google Authenticator y escribe los seis dígitos que aparecen.</p>
       <div className="mt-8 flex items-start gap-5">
         <div className="rounded-control bg-surface-2 p-2 shadow-[inset_0_0_0_1px_var(--t-border)]">

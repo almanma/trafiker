@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { EstadoPantalla } from "@/components/firma/Estados";
+import { EstadoServidor } from "@/components/firma/EstadoServidor";
 import { DetalleNoticia } from "@/components/firma/DetalleNoticia";
-import { SkeletonLista } from "@/components/firma/Skeletons";
+import { SkeletonDetalle } from "@/components/firma/Skeletons";
 import { noticiaPorId, noticias } from "@/mocks/noticias";
 
 export function generateStaticParams() {
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: PageProps<"/noticia/[id]">): 
   return { title: noticiaPorId[id]?.titular ?? "Noticia" };
 }
 
-export default async function PaginaNoticia({ params }: PageProps<"/noticia/[id]">) {
+export default async function PaginaNoticia({ params, searchParams }: PageProps<"/noticia/[id]">) {
   const { id } = await params;
   const n = noticiaPorId[id];
   if (!n) notFound();
@@ -29,10 +29,10 @@ export default async function PaginaNoticia({ params }: PageProps<"/noticia/[id]
         <span aria-hidden className="px-2">/</span>
         <span>{n.tema}</span>
       </nav>
-      <Suspense fallback={<SkeletonLista filas={3} />}>
-        <EstadoPantalla esqueleto={<SkeletonLista filas={3} />}>
+      <Suspense fallback={<SkeletonDetalle />}>
+        <EstadoServidor busqueda={searchParams} esqueleto={<SkeletonDetalle />}>
           <DetalleNoticia noticia={n} />
-        </EstadoPantalla>
+        </EstadoServidor>
       </Suspense>
     </div>
   );

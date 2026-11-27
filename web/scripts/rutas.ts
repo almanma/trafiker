@@ -17,5 +17,5 @@ export const rutas = [
 
 export const vistas = [
   { nombre: "escritorio", width: 1440, height: 900 },
-  { nombre: "movil", width: 390, height: 844 },
+  { nombre: "movil", width: 360, height: 780 },
 ];

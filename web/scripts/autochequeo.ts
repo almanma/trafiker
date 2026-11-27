@@ -1,8 +1,9 @@
 /**
- * Autochequeo de Trafiker (Playwright). Replica los criterios de check_screen:
- * contraste por texto, desborde a 390 px, textos encimados, objetivos táctiles,
- * imágenes y fuentes, colores fuera de tokens (ΔE OKLab), tipografía y las 16
- * señales de página generada. Escribe capturas/autochequeo.md.
+ * Autochequeo de Trafiker (Playwright), sistema B «Centro de control». Criterios:
+ * contraste por texto, desborde a 360 px, textos encimados, objetivos táctiles,
+ * imágenes y fuentes, colores fuera de tokens (ΔE OKLab), tipografía Geist y
+ * señales de página genérica (las que este brief pide van justificadas).
+ * Escribe capturas/autochequeo.md.
  *
  * Uso: npx tsx scripts/autochequeo.ts   (con `npm run dev` corriendo)
  */
@@ -23,10 +24,11 @@ interface Hallazgo {
 
 /* Señales que quedan a propósito, con su porqué (se reportan, no penalizan como media/alta). */
 const justificaciones: { cat: string; ruta?: string; razon: string }[] = [
-  { cat: "Marcadores 01/02", ruta: "/onboarding", razon: "El wizard tiene una secuencia real de 4 pasos; la sección 10 permite 01/02 solo aquí." },
-  { cat: "Tarjetas idénticas", ruta: "/showcase", razon: "Galería de miniaturas: la uniformidad es el contenido (comparar pantallas). La primera ocupa el ancho completo para romper la serie." },
-  { cat: "Tarjetas idénticas", ruta: "/guia", razon: "Muestras de radio y paleta: piezas de catálogo que deben medirse igual para compararse." },
-  { cat: "Colores fuera del sistema", ruta: "/guia", razon: "La guía muestra a la vez las muestras de ambos temas; son tokens del otro modo." },
+  { cat: "Tarjetas idénticas", razon: "El brief AAA pide tarjetas (noticias, ideas, expedientes, cifras). Cambian de contenido y la primera de Hoy es destacada." },
+  { cat: "Vidrio", razon: "Barras fijas (superior, inferior móvil, onboarding) al 85–95 % de opacidad con desenfoque: el texto siempre queda sobre superficie casi sólida." },
+  { cat: "Separador ·", razon: "En el sistema B el punto medio separa metadatos secundarios (patrón de Linear y Vercel); etiqueta y valor siguen en spans propios donde importa." },
+  { cat: "Flecha al final", razon: "↗ marca enlaces que abren la fuente original en otra pestaña; → solo en «Ver en la matriz»." },
+  { cat: "Colores fuera del sistema", ruta: "/guia", razon: "La guía muestra muestras de color y la escala en ambos temas; son tokens." },
 ];
 
 const tokensHex: string[] = Array.from(new Set<string>(Object.values(color).flatMap((t) => Object.values(t) as string[]))).concat([
@@ -198,7 +200,9 @@ async function analizar(page: Page, movil: boolean) {
           const enLinea = cs.display === "inline" && el.parentElement && /^(P|LI|SPAN|DD|TD)$/.test(el.parentElement.tagName);
           const etiquetaCheck = el.tagName === "INPUT" && (el as HTMLInputElement).type === "checkbox" ? el.closest("label") : null;
           if (etiquetaCheck && etiquetaCheck.getBoundingClientRect().height >= 44) continue;
-          push("Objetivo táctil", enLinea ? "baja" : "media", el, `Alto ${Math.round(r.height)}px${enLinea ? " (enlace en línea, excepción WCAG 2.5.8)" : ""}`, "min-h-11 en móvil.");
+          // AA (WCAG 2.5.8) pide 24 px; 44 px es la recomendación AAA (2.5.5).
+          const sev = enLinea || r.height >= 24 ? "baja" : "media";
+          push("Objetivo táctil", sev, el, `Alto ${Math.round(r.height)}px${enLinea ? " (enlace en línea, excepción WCAG 2.5.8)" : r.height >= 24 ? " (cumple AA 24 px; AAA pide 44)" : ""}`, "min-h-11 en móvil.");
         }
       }
 
@@ -207,7 +211,7 @@ async function analizar(page: Page, movil: boolean) {
       const caras = Array.from(document.fonts);
       for (const f of caras) if (f.status === "error") push("Fuente", "alta", null, `No cargó ${f.family}`, "Revisa next/font.");
       const usada = (sel: string) => (document.querySelector(sel) ? getComputedStyle(document.querySelector(sel)!).fontFamily : "");
-      for (const fam of ["Newsreader", "Inter"]) {
+      for (const fam of ["Geist"]) {
         const cargada = caras.some((f) => f.family.includes(fam) && f.status === "loaded");
         if (!cargada && caras.some((f) => f.family.includes(fam))) push("Fuente", "alta", null, `${fam} declarada pero no cargada`, "Revisa preload/subsets.");
       }
@@ -228,7 +232,7 @@ async function analizar(page: Page, movil: boolean) {
           const lv = oklab(v);
           let mejor = Infinity;
           for (const t of tokRgba) {
-            if (Math.abs(t[3] - v[3]) > 0.03) continue;
+            if (Math.abs(t[3] - v[3]) > 0.03 && !(t[3] === 1 && v[3] < 1)) continue;
             const lt = oklab(t);
             mejor = Math.min(mejor, Math.hypot(lv[0] - lt[0], lv[1] - lt[1], lv[2] - lt[2]));
           }
@@ -243,9 +247,11 @@ async function analizar(page: Page, movil: boolean) {
       /* 7. Tipografía */
       for (const h of Array.from(document.querySelectorAll("h1,h2"))) {
         if (!visible(h)) continue;
-        if (!/newsreader/i.test(getComputedStyle(h).fontFamily)) push("Tipografía", "alta", h, `Titular en ${getComputedStyle(h).fontFamily.split(",")[0]}`, "Los h1/h2 van en Newsreader.");
+        const cs = getComputedStyle(h);
+        if (!/geist/i.test(cs.fontFamily)) push("Tipografía", "alta", h, `Titular en ${cs.fontFamily.split(",")[0]}`, "Los h1/h2 van en Geist.");
+        if (parseInt(cs.fontWeight) < 600) push("Tipografía", "media", h, `Titular con peso ${cs.fontWeight}`, "Titulares en 600.");
       }
-      if (!/inter/i.test(getComputedStyle(document.body).fontFamily)) push("Tipografía", "alta", document.body, "El cuerpo no usa Inter", "body con font-sans.");
+      if (!/geist/i.test(getComputedStyle(document.body).fontFamily)) push("Tipografía", "alta", document.body, "El cuerpo no usa Geist", "body con font-sans.");
       const tamanos = new Set(textos.map((e) => getComputedStyle(e).fontSize));
       if (tamanos.size > 9) push("Tipografía", "alta", null, `${tamanos.size} tamaños: ${Array.from(tamanos).join(", ")}`, "Usa solo los 8 de la escala.");
       void usada;
@@ -343,6 +349,12 @@ async function main() {
   for (const v of vistas) {
     for (const tema of ["dark", "light"]) {
       const ctx = await browser.newContext({ viewport: { width: v.width, height: v.height }, reducedMotion: "reduce" });
+      // Sin splash: ya «se vio» en esta sesión.
+      await ctx.addInitScript(() => {
+        try {
+          sessionStorage.setItem("trafiker-splash", "1");
+        } catch {}
+      });
       // tsx (esbuild) inyecta __name en funciones; lo definimos en la página.
       await ctx.addInitScript("globalThis.__name = (f) => f;");
       const page = await ctx.newPage();

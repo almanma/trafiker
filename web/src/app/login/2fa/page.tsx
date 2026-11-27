@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { EstadoPantalla } from "@/components/firma/Estados";
+import { SkeletonFormulario } from "@/components/firma/Skeletons";
+import { EstadoServidor } from "@/components/firma/EstadoServidor";
 import { MarcoAcceso } from "../MarcoAcceso";
 import { Codigo } from "./Codigo";
 
 export const metadata: Metadata = { title: "Segundo factor" };
 
-export default function Pagina2FA() {
+export default function Pagina2FA({ searchParams }: PageProps<"/login/2fa">) {
   return (
     <MarcoAcceso>
       <Suspense fallback={null}>
-        <EstadoPantalla esqueleto={<div className="h-64 animate-respira rounded-control bg-surface-2" role="status" aria-label="Cargando" />}>
+        <EstadoServidor busqueda={searchParams} esqueleto={<SkeletonFormulario />}>
           <Codigo />
-        </EstadoPantalla>
+        </EstadoServidor>
       </Suspense>
     </MarcoAcceso>
   );

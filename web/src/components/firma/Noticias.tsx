@@ -50,10 +50,10 @@ export function NoticiaHero({ noticia, onAbrir, seleccionada, className }: Props
           {articulo.hora}
         </Meta>
       </FilaMeta>
-      <Titular noticia={noticia} onAbrir={onAbrir} className="max-w-[22ch] text-secundario serif-display md:text-hero">
+      <Titular noticia={noticia} onAbrir={onAbrir} className="max-w-[22ch] text-secundario titular md:text-hero">
         <span id={`h-${noticia.id}`}>{noticia.titular}</span>
       </Titular>
-      <p className="mt-5 max-w-lectura font-serif text-lectura serif-texto text-text">{noticia.resumen}</p>
+      <p className="mt-5 max-w-lectura text-lectura text-text">{noticia.resumen}</p>
       <div className="mt-6 grid gap-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
         <BarraDeSesgo conteo={contarPorLinea(noticia.articulos)} className="max-w-md" />
         <FilaMeta>
@@ -80,7 +80,7 @@ export function NoticiaEstandar({ noticia, onAbrir, seleccionada, variante = "co
         <Meta etiqueta="Tema">{noticia.tema}</Meta>
         <DeltaTendencia tendencia={noticia.tendencia} delta={noticia.delta} />
       </FilaMeta>
-      <Titular noticia={noticia} onAbrir={onAbrir} className={cn(variante === "amplia" ? "text-tarjeta md:text-secundario" : "text-tarjeta", "serif-display")}>
+      <Titular noticia={noticia} onAbrir={onAbrir} className={cn(variante === "amplia" ? "text-tarjeta md:text-secundario" : "text-tarjeta", "titular")}>
         {noticia.titular}
       </Titular>
       {variante === "amplia" && <p className="mt-3 max-w-lectura text-cuerpo text-muted">{noticia.resumen}</p>}
@@ -105,7 +105,7 @@ export function FilaTitular({ noticia, onAbrir, seleccionada, indice, className 
     <article className={cn("flex gap-3 py-3 ", seleccionada ? "shadow-regla-senal" : "shadow-regla", seleccionada && " pl-3", className)}>
       <Newspaper size={14} strokeWidth={1.5} className="mt-1 shrink-0 text-muted" aria-hidden />
       <div className="min-w-0">
-        <Titular noticia={noticia} onAbrir={onAbrir} className="font-serif text-lectura serif-texto">
+        <Titular noticia={noticia} onAbrir={onAbrir} className="text-lectura">
           {noticia.titular}
         </Titular>
         <FilaMeta className="mt-1 text-dato">

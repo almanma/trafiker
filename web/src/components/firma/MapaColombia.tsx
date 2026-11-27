@@ -48,7 +48,7 @@ export function MapaColombia({ seleccion, onElegir }: { seleccion: string[]; onE
                 title={d.nombre}
                 aria-label={d.nombre}
                 onClick={() => onElegir(d.id)}
-                className={cn("grid h-full w-full place-items-center rounded-punto font-mono text-dato", on ? "bg-signal text-sobre-senal" : "text-muted hover:text-text")}
+                className={cn("grid h-full w-full place-items-center rounded-punto text-dato font-medium", on ? "bg-signal text-sobre-senal" : "text-muted hover:text-text")}
               >
                 {d.abr}
               </button>

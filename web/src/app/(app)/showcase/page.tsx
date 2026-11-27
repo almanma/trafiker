@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { EstadoPantalla } from "@/components/firma/Estados";
+import { EstadoServidor } from "@/components/firma/EstadoServidor";
 import { SkeletonLista } from "@/components/firma/Skeletons";
 import { DatosEjemplo } from "@/components/firma/Basicos";
 
@@ -11,22 +11,22 @@ const pantallas = [
   { ruta: "/hoy", nombre: "Hoy", archivo: "hoy", que: "El brief de las 5 a. m." },
   { ruta: "/matriz", nombre: "Matriz de cobertura", archivo: "matriz", que: "La pantalla firma" },
   { ruta: "/noticia/cupo-endeudamiento-bogota", nombre: "Detalle de noticia", archivo: "noticia", que: "También se abre como drawer" },
-  { ruta: "/tendencias", nombre: "Tendencias", archivo: "tendencias", que: "Streamgraph y ranking" },
-  { ruta: "/verificacion", nombre: "Verificación", archivo: "verificacion", que: "Expedientes con sello" },
-  { ruta: "/ideas", nombre: "Ideas", archivo: "ideas", que: "Kanban y guion" },
+  { ruta: "/tendencias", nombre: "Tendencias", archivo: "tendencias", que: "Líneas, cruz de lectura y ranking" },
+  { ruta: "/verificacion", nombre: "Verificación", archivo: "verificacion", que: "Veredicto, evidencia y fuentes" },
+  { ruta: "/ideas", nombre: "Ideas", archivo: "ideas", que: "Tarjetas con copiar y guion" },
   { ruta: "/fuentes", nombre: "Fuentes", archivo: "fuentes", que: "Salud de los feeds" },
-  { ruta: "/onboarding", nombre: "Configurar campaña", archivo: "onboarding", que: "Wizard de cuatro pasos" },
+  { ruta: "/onboarding", nombre: "Configurar campaña", archivo: "onboarding", que: "Cuatro pasos con progreso" },
   { ruta: "/login", nombre: "Acceso", archivo: "login", que: "Login" },
   { ruta: "/login/2fa", nombre: "Segundo factor", archivo: "login-2fa", que: "Código de seis dígitos" },
-  { ruta: "/guia", nombre: "Guía de marca", archivo: "guia", que: "Tokens y referencias" },
+  { ruta: "/guia", nombre: "Guía de marca", archivo: "guia", que: "Sistema de diseño" },
 ];
 
-export default function PaginaShowcase() {
+export default function PaginaShowcase({ searchParams }: PageProps<"/showcase">) {
   return (
     <Suspense fallback={<SkeletonLista />}>
-      <EstadoPantalla esqueleto={<SkeletonLista />}>
+      <EstadoServidor busqueda={searchParams} esqueleto={<SkeletonLista />}>
         <Galeria />
-      </EstadoPantalla>
+      </EstadoServidor>
     </Suspense>
   );
 }
@@ -36,9 +36,9 @@ function Galeria() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 pb-8 shadow-regla">
         <div>
-          <h1 className="text-secundario serif-display md:text-hero">Showcase</h1>
+          <h1 className="text-secundario titular md:text-hero">Showcase</h1>
           <p className="mt-3 max-w-lectura text-cuerpo text-muted">
-            Todas las pantallas en escritorio (1440 px) y móvil (390 px). Prueba los estados con <span className="font-mono text-dato">?estado=vacio</span>,{" "}
+            Todas las pantallas en escritorio (1440 px) y móvil (360 px). Prueba los estados con <span className="font-mono text-dato">?estado=vacio</span>,{" "}
             <span className="font-mono text-dato">carga</span>, <span className="font-mono text-dato">error</span> o{" "}
             <span className="font-mono text-dato">sin-conexion</span>.
           </p>
@@ -50,7 +50,7 @@ function Galeria() {
         {pantallas.map((p, i) => (
           <li key={p.ruta} className={i === 0 ? "py-8 shadow-regla md:col-span-2" : "py-8 shadow-regla"}>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-tarjeta serif-display">
+              <h2 className="text-tarjeta titular">
                 <Link href={p.ruta} className="inline-flex min-h-11 items-center hover:text-signal">
                   {p.nombre}
                 </Link>

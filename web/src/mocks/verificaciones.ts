@@ -96,4 +96,5 @@ export const nombreVeredicto = {
   enganoso: "Engañoso",
   falso: "Falso",
   "sin-evidencia": "Sin evidencia",
+  "sin-verificar": "Sin verificar",
 } as const;
